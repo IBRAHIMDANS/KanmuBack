@@ -11,6 +11,6 @@ export class AppService {
   }
 
   root(): string {
-    return this.config.get('APP_URL');
+    return this.config.get('HOST');
   }
 }
