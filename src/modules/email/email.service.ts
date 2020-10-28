@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import nodemailer from 'nodemailer'
+import { User } from '../../entities';
 @Injectable()
 export class EmailService {
   constructor(private readonly config: ConfigService) {
   }
 
-  async sendMailRegister (user) {
+  async sendMailRegister (user: User) {
     this.createTransporter().sendMail({
         from: this.config.get('mail.SENDER_EMAIL'),
         to: user.email,
@@ -27,12 +28,12 @@ export class EmailService {
     return nodemailer.createTransport({
       service: 'SMTP',
       auth: {
-        user: this.config.get('mail.USERNAME'),
-        pass: this.config.get('mail.PASSWORD'),
+        user: this.config.get('mail.username'),
+        pass: this.config.get('mail.password'),
       },
-      host: `in-v3.mailjet.com`,
-      port: '587',
-      secureConnection: false,
+      host: `${this.config.get('mail.host', 'in-v3.mailjet.com')}`,
+      port: this.config.get('mail.port', 587),
+      secureConnection: this.config.get('mail.secure'),
       ignoreTLS: false,
     });
   }

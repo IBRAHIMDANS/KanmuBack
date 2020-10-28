@@ -11,7 +11,7 @@ import { AuthModule } from '../auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [database , auth],
+      load: [database, auth],
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
