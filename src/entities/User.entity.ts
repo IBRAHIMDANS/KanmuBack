@@ -10,6 +10,7 @@ import {
 
 import { Exclude } from 'class-transformer';
 import { PasswordTransformer } from '../lib/password.transformer';
+import { Length, Min, MinLength } from 'class-validator';
 
 @Entity({
   name: 'users',
@@ -34,6 +35,7 @@ export default class User {
   slug: string;
 
   @Exclude()
+  @Length(4)
   @Column({
     name: 'password',
     length: 255,
