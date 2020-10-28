@@ -6,6 +6,7 @@ import { HealthModule } from '../health/health.module';
 import { auth, database } from '../../config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../../entities';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { User } from '../../entities';
       },
       inject: [ConfigService],
     }),
+    AuthModule,
     HealthModule,
   ],
   controllers: [AppController],

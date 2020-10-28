@@ -14,6 +14,7 @@ import { PasswordTransformer } from '../lib/password.transformer';
 @Entity({
   name: 'users',
 })
+
 export default class User {
 
   @Column({ unique: true })
@@ -28,6 +29,9 @@ export default class User {
 
   @Column({ length: 255 })
   email: string;
+
+  @Column({ length: 255 })
+  slug: string;
 
   @Exclude()
   @Column({
