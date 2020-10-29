@@ -11,14 +11,16 @@ export class EmailService {
   constructor(private readonly config: ConfigService) {
     // this.transporter = mailjet.connect(this.config.get('mail.username'), this.config.get('mail.password'));
   }
-
   async sendMailRegister(user: User, token?: any) {
     this.createTransporter().sendMail({
-      from: 'danny@kanmu.fr',
-       to: user.email,
-      subject: 'Welcome',
+      from: 'noreply@kanmu.fr',
+      to: user.email,
+      subject: 'Welcome to Kanmu Team',
       text: 'KANMU',
-      // html: 'KANMU',
+      html: `
+<p>Hello ${user.firstName} ${user.lastName}, to change your password please click on the link </p>
+<a type="button" href="${this.config.get('FRONT_URL')}">Go to website  </a>
+ `,
     }, function(error, info) {
       if (error) {
         console.log(error);
@@ -28,35 +30,31 @@ export class EmailService {
       console.log('Message sent', info);
       // transporter.close();
     });
-
-    // const request = this.transporter.post('send', { version: 'v3.1' }).request({
-    //   Messages: [
-    //     {
-    //       From: {
-    //         Email: 'noreply@kanmu.fr',
-    //         Name: 'KANMU',
-    //       },
-    //       To: user.email,
-    //       TemplateID: 1,
-    //       TemplateLanguage: true,
-    //       Subject: 'Your email flight plan!',
-    //     },
-    //   ],
-    // })
-    // request
-    //   .then(result => {
-    //     console.log(result.body)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //     // console.log(err.statusCode)
-    //   })
-
+  }
+  async sendMailForgetPassword(user: User, token?: any) {
+    this.createTransporter().sendMail({
+      from: 'noreply@kanmu.fr',
+       to: user.email,
+      subject: 'Welcome to Kanmu Team',
+      text: 'KANMU',
+       html: `
+<p>Hello ${user.firstName} ${user.lastName}, to change your password please click on the link </p>
+<a type="button" href="${this.config.get('FRONT_URL')}/#/changePassword?token=${token}">Click  </a>
+ `,
+    }, function(error, info) {
+      if (error) {
+        console.log(error);
+        return;
+      }
+      // console.log(this.config.get('mail.username', 'in-v3.mailjet.com'));
+      console.log('Message sent', info);
+      // transporter.close();
+    });
   }
 
   createTransporter() {
     return nodemailer.createTransport({
-      service: 'SMTP',
+      service: 'Mailjet',
       auth: {
         user: `${this.config.get('mail.username')}`,
         pass: `${this.config.get('mail.password')}`,

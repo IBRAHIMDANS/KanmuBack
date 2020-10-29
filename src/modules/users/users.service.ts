@@ -47,6 +47,7 @@ export class UsersService {
     }
     const user = await this.userRepository.create(payload);
     try {
+
       return await this.save(user);
     } catch (error) {
       throw new ConflictException(error);
@@ -55,7 +56,8 @@ export class UsersService {
 
   async save(user: User): Promise<User> {
     try {
-      return await this.userRepository.save(user);
+      await this.emailService.sendMailRegister(user)
+      return await this.userRepository.save(user)
     } catch (error) {
       throw new ConflictException(error);
     }
@@ -66,7 +68,7 @@ export class UsersService {
       // @ts-ignore
       return this.userRepository.findOneOrFail({ where: { email: payload.email } }).then(async res => {
         const token = this.jwtService.sign({ id: res.id })
-        return await this.emailService.sendMailRegister(res, token);
+        return await this.emailService.sendMailForgetPassword(res, token);
       }).catch(err => {
         throw new NotFoundException(err);
       });
