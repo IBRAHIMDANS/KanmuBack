@@ -4,10 +4,12 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { TokenModel } from './dto/token.model';
-import { RegisterPayload } from './payloads';
+import { EmailPayload, PasswordPayload, RegisterPayload } from './payloads';
 import { User } from '../../entities';
+
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Controller('auth')
 @ApiTags('authentication')
@@ -34,6 +36,24 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async register(@Body() payload: RegisterPayload): Promise<User> {
     return await this.userService.create(payload);
+  }
+
+  @Post('send-mail-forget')
+  // @UseGuards(LocalAuthGuard)
+  @ApiResponse({ status: 201, description: 'Successful Registration' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async forgetPasswordIsNotConnect(@Body() payload: EmailPayload): Promise<User> {
+    return await this.userService.SendMailForgetPassword(payload);
+  }
+
+  @Post('reset-password')
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 201, description: 'Successful Registration' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async resetPassword(@Body() payload: PasswordPayload) {
+    return await this.userService.resetPassword(payload);
   }
 
 }

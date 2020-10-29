@@ -1,16 +1,27 @@
-import { ConflictException, HttpException, HttpStatus, Injectable, NotAcceptableException } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities';
-import { RegisterPayload } from '../auth/payloads';
+import { EmailPayload, PasswordPayload, RegisterPayload } from '../auth/payloads';
 import * as crypto from 'crypto';
-
+import { EmailService } from '../email/email.service';
+import jwt from 'passport-jwt'
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
 
   constructor(@InjectRepository(User)
               private readonly userRepository: Repository<User>,
+              private readonly emailService: EmailService,
+              private readonly jwtService: JwtService,
   ) {
   }
 
@@ -30,22 +41,54 @@ export class UsersService {
   }
 
   async create(payload: RegisterPayload): Promise<User> {
-      const existedUser = await this.getByEmail(payload.email);
-      if (existedUser) {
-        throw new NotAcceptableException('User with provided email already created.');
-      }
-      const user = await this.userRepository.create(payload);
-      try {
-        return await this.save(user);
-      } catch (error) {
-        throw new ConflictException(error);
-      }
+    const existedUser = await this.getByEmail(payload.email);
+    if (existedUser) {
+      throw new NotAcceptableException('User with provided email already created.');
+    }
+    const user = await this.userRepository.create(payload);
+    try {
+      return await this.save(user);
+    } catch (error) {
+      throw new ConflictException(error);
+    }
   }
 
   async save(user: User): Promise<User> {
     try {
       return await this.userRepository.save(user);
     } catch (error) {
+      throw new ConflictException(error);
+    }
+  }
+
+  async SendMailForgetPassword(payload: EmailPayload): Promise<User> {
+    try {
+      // @ts-ignore
+      return this.userRepository.findOneOrFail({ where: { email: payload.email } }).then(async res => {
+        const token = this.jwtService.sign({ id: res.id })
+        return await this.emailService.sendMailRegister(res, token);
+      }).catch(err => {
+        throw new NotFoundException(err);
+      });
+    } catch (error) {
+
+      throw new ConflictException(error);
+    }
+  }
+
+  async resetPassword(payload: PasswordPayload): Promise<User> {
+    try {
+      // @ts-ignore
+
+      return this.userRepository.findOneOrFail({ where: { email: payload.email } }).then(async res => {
+        console.log(res);
+        return await this.emailService.sendMailRegister(res);
+        return res;
+      }).catch(err => {
+        throw new NotFoundException(err);
+      });
+    } catch (error) {
+
       throw new ConflictException(error);
     }
   }
