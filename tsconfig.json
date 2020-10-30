@@ -13,12 +13,6 @@
     "noLib": false,
     "skipLibCheck": true,
     "incremental": true,
-    "include": [
-      "src/**/*"
-    ],
-    "exclude": [
-      "node_modules",
-      "dist"
-    ]
+    "esModuleInterop": true
   }
 }

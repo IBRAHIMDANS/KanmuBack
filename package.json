@@ -13,6 +13,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
+    "prestart:prod": "rimraf dist && npm run build",
+    "postinstall": "npm run prestart:prod",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -83,6 +85,17 @@
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.7.4"
   },
+  "engines": {
+    "node": ">=12.7.x",
+    "npm": ">=6.13.4",
+    "yarn": ">=1.19.x"
+  },
+  "keywords": [
+    "heroku",
+    "KANMU",
+    "ESPORT",
+    "API"
+  ],
   "jest": {
     "moduleFileExtensions": [
       "js",
