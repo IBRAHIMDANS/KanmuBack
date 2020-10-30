@@ -6,6 +6,7 @@ export const setupSwagger = (app: INestApplication) => {
   const options = new DocumentBuilder()
     .setTitle(SWAGGER_API_NAME)
     .setDescription(SWAGGER_API_DESCRIPTION)
+    .setBasePath("api")
     .setVersion(SWAGGER_API_CURRENT_VERSION)
     .build();
 

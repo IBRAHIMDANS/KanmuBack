@@ -10,8 +10,6 @@ import { ResourceNotFoundExceptionFilter } from './shared/exceptions/filters/res
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // config de swagger
-  setupSwagger(app);
 
   // gestion des exceptions
   app.useGlobalFilters(
@@ -32,6 +30,10 @@ async function bootstrap() {
   );
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
+  // config de swagger
+  setupSwagger(app);
+
   await app.listen(process.env.PORT || 3000);
 }
 
