@@ -28,8 +28,9 @@ async function bootstrap() {
     new ClassSerializerInterceptor(app.get(Reflector)),
     new LoggingInterceptor(),
   );
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
+  // const globalPrefix = 'api';
+  // app.setGlobalPrefix(globalPrefix);
+
 
   // config de swagger
   setupSwagger(app);

@@ -4,13 +4,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../../entities';
 import { EmailModule } from '../email/email.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
+import { DefaultAdminModule } from 'nestjs-admin';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     ConfigModule,
     EmailModule,
+    DefaultAdminModule,
   ],
   providers: [UsersService],
   exports: [UsersService],

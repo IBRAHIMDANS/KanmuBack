@@ -1,13 +1,19 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DefaultAdminModule } from 'nestjs-admin'
+import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { HealthModule } from '../health/health.module';
 import { auth, database, mail } from '../../config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../../entities';
 import { AuthModule } from '../auth/auth.module';
-import { JwtModule } from '@nestjs/jwt';
+import { BackOfficeModule } from '../backoffice/backoffice.module';
+import AdminUser from 'nestjs-admin/dist/src/adminUser/adminUser.entity';
+
 
 @Module({
   imports: [
@@ -18,13 +24,15 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => {
         const db = config.get('database');
-        db.entities = [User];
+        db.entities = [User, AdminUser];
         return db;
       },
       inject: [ConfigService],
     }),
     AuthModule,
     HealthModule,
+    BackOfficeModule,
+    // DefaultAdminModule,
     {
       ...JwtModule.registerAsync({
         useFactory: async (configService: ConfigService) => {
@@ -49,7 +57,8 @@ import { JwtModule } from '@nestjs/jwt';
   ],
   controllers: [AppController],
   providers: [AppService],
-  exports: [JwtModule],
+  exports: [JwtModule, BackOfficeModule],
+
 })
 export class AppModule {
 }

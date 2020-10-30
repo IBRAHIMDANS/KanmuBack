@@ -28,7 +28,7 @@ export default class User {
   @Column({ length: 255, name: 'last_name' })
   lastName: string;
 
-  @Column({ length: 255 })
+  @Column({ length: 255, unique: true, nullable: false })
   email: string;
 
   @Column({ length: 255 })
