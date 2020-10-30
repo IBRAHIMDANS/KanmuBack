@@ -32,7 +32,6 @@ import AdminUser from 'nestjs-admin/dist/src/adminUser/adminUser.entity';
     AuthModule,
     HealthModule,
     BackOfficeModule,
-    // DefaultAdminModule,
     {
       ...JwtModule.registerAsync({
         useFactory: async (configService: ConfigService) => {

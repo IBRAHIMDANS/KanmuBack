@@ -13,23 +13,17 @@ import { PasswordTransformer } from '../lib/password.transformer';
 import { Length, Min, MinLength } from 'class-validator';
 
 @Entity({
-  name: 'users',
+  name: 'sponsors',
 })
 
-export default class User {
+export default class Sponsor {
 
   @Column({ unique: true })
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({ length: 255, name: 'first_name' })
-  firstName: string;
-
-  @Column({ length: 255, name: 'last_name' })
-  lastName: string;
-
   @Column({ length: 255 })
-  email: string;
+  title: string;
 
   @Column({ length: 255 })
   slug: string;
@@ -42,7 +36,6 @@ export default class User {
     transformer: new PasswordTransformer(),
   })
   password: string;
-
 
   @Exclude()
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
@@ -61,4 +54,5 @@ export default class User {
   updateDates() {
     this.updatedAt = new Date();
   }
+
 }

@@ -8,8 +8,12 @@ export class AppController {
 
   @Get()
   // @UseGuards(AuthGuard())
-  root(): string {
-    return this.appService.root();
+  root() {
+    return {
+      Name: 'KANMU',
+      Version: '1.0.0',
+      DOCUMENTATION: 'api/docs'
+    };
   }
 
   @Get('/hello')
