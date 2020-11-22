@@ -38,12 +38,6 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('Wrong login combination!');
     }
-    // if (!user.confirmedAt) {
-    //   throw new UnauthorizedException('You did not confirmed your email');
-    // }
-    // if (user.resetPasswordToken) {
-    //   throw new UnauthorizedException('You did not finished reset password');
-    // }
     return user;
 
   }

@@ -1,28 +1,18 @@
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-
-import { Exclude } from 'class-transformer';
-import { PasswordTransformer } from '../lib/password.transformer';
-import { Length, Min, MinLength } from 'class-validator';
+import { Column, Entity, JoinTable, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { TimestampEntities } from '../Generics/timestamp.entities';
+import { User } from './index';
 
 @Entity({
   name: 'players',
 })
 
-export default class Players {
+export default class Players extends TimestampEntities {
 
   @Column({ unique: true })
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({ length: 255})
+  @Column({ length: 255 })
   title: string;
 
   @Column({ length: 255, name: 'admin_id' })
@@ -43,30 +33,24 @@ export default class Players {
   @Column({ length: 255, name: 'department'  })
   department: string;
 
-  @Column({ length: 255, name: 'region'  })
+  @Column({ length: 255, name: 'region' })
   region: string;
 
-  @Column({ length: 255, name: 'state'  })
+  @Column({ length: 255, name: 'state' })
   state: string;
 
-  @Column({ length: 255, name: 'continent'  })
+  @Column({ length: 255, name: 'continent' })
   continent: string;
 
-  @Exclude()
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
-  createdAt: Date;
-
-  @Exclude()
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
-  updatedAt: Date;
-
-  @BeforeInsert()
-  createDates() {
-    this.createdAt = new Date();
-  }
-
-  @BeforeUpdate()
-  updateDates() {
-    this.updatedAt = new Date();
-  }
+  @OneToOne(() => User,
+    // user => user.player,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+      cascade: true,
+      eager: true,
+    },
+  )
+  @JoinTable()
+  userId: User;
 }

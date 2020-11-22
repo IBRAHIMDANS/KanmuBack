@@ -11,7 +11,6 @@ export class BadRequestExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
     const message = exception.message;
-
     Logger.error(message, exception.stack, `${request.method} ${request.url}`);
 
     response.status(status).json(buildResponseError(HttpStatus.BAD_REQUEST, message, request));

@@ -1,7 +1,6 @@
 import {
   ConflictException,
   HttpException,
-  HttpStatus,
   Injectable,
   NotAcceptableException,
   NotFoundException,
@@ -12,7 +11,6 @@ import { User } from '../../entities';
 import { EmailPayload, PasswordPayload, RegisterPayload } from '../auth/payloads';
 import * as crypto from 'crypto';
 import { EmailService } from '../email/email.service';
-import jwt from 'passport-jwt'
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -40,24 +38,23 @@ export class UsersService {
       .getOne();
   }
 
-  async create(payload: RegisterPayload): Promise<User> {
+  async create(payload: RegisterPayload): Promise<void | Partial<User>> {
     const existedUser = await this.getByEmail(payload.email);
     if (existedUser) {
       throw new NotAcceptableException('User with provided email already created.');
     }
     const user = await this.userRepository.create(payload);
     try {
-
       return await this.save(user);
     } catch (error) {
       throw new ConflictException(error);
     }
   }
 
-  async save(user: User): Promise<User> {
+  async save(user: User): Promise< Partial<User>> {
     try {
-      await this.emailService.sendMailRegister(user)
       return await this.userRepository.save(user)
+        .then(async () => await this.emailService.sendMailRegister(user)).catch(e => e.message)
     } catch (error) {
       throw new ConflictException(error);
     }
@@ -67,7 +64,7 @@ export class UsersService {
     try {
       // @ts-ignore
       return this.userRepository.findOneOrFail({ where: { email: payload.email } }).then(async res => {
-        const token = this.jwtService.sign({ id: res.id })
+        const token = this.jwtService.sign({ id: res.id });
         return await this.emailService.sendMailForgetPassword(res, token);
       }).catch(err => {
         throw new NotFoundException(err);

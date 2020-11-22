@@ -1,22 +1,17 @@
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Exclude } from 'class-transformer';
 import { PasswordTransformer } from '../lib/password.transformer';
-import { Length, Min, MinLength } from 'class-validator';
+import { Length } from 'class-validator';
+import { TimestampEntities } from '../Generics/timestamp.entities';
+import Players from './Player.entity';
+import { UserRoleEnum } from '../enum/UserRoleEnum';
 
 @Entity({
   name: 'users',
 })
 
-export default class User {
+export default class User extends TimestampEntities {
 
   @Column({ unique: true })
   @PrimaryGeneratedColumn()
@@ -43,22 +38,22 @@ export default class User {
   })
   password: string;
 
+  @Column({
+    type: 'enum',
+    enum: UserRoleEnum,
+    default: UserRoleEnum.USER
+  })
+  role: string;
 
-  @Exclude()
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
-  createdAt: Date;
-
-  @Exclude()
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
-  updatedAt: Date;
-
-  @BeforeInsert()
-  createDates() {
-    this.createdAt = new Date();
-  }
-
-  @BeforeUpdate()
-  updateDates() {
-    this.updatedAt = new Date();
-  }
+  @OneToOne(() => Players,
+    player => player.id,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+      cascade: true,
+      eager: true,
+    },
+  )
+  @JoinColumn()
+  player: Players;
 }

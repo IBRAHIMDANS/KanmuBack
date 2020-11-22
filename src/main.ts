@@ -6,6 +6,8 @@ import { setupSwagger } from './swagger';
 import { HttpExceptionFilter } from './shared/exceptions/filters/http-exception.filter';
 import { BadRequestExceptionFilter } from './shared/exceptions/filters/bad.request.exception.filter';
 import { ResourceNotFoundExceptionFilter } from './shared/exceptions/filters/resource.not.found.exception.filter';
+import helmet from 'helmet';
+import  csurf from 'csurf';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,6 +22,7 @@ async function bootstrap() {
 
   // middleware
   app.enableCors();
+  app.use(helmet());
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
     whitelist: true,
@@ -34,7 +37,6 @@ async function bootstrap() {
 
   // config de swagger
   setupSwagger(app);
-
   await app.listen(process.env.PORT || 3000);
 }
 

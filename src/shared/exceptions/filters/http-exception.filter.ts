@@ -7,7 +7,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
     const status = exception.getStatus ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-
+    console.log(exception);
     const errorResponse = {
       code: status,
       timestamp: new Date().toLocaleDateString(),

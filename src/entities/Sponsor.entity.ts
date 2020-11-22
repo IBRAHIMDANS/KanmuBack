@@ -1,22 +1,15 @@
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Exclude } from 'class-transformer';
 import { PasswordTransformer } from '../lib/password.transformer';
-import { Length, Min, MinLength } from 'class-validator';
+import { Length } from 'class-validator';
+import { TimestampEntities } from '../Generics/timestamp.entities';
 
 @Entity({
   name: 'sponsors',
 })
 
-export default class Sponsor {
+export default class Sponsor extends TimestampEntities {
 
   @Column({ unique: true })
   @PrimaryGeneratedColumn()
@@ -37,22 +30,5 @@ export default class Sponsor {
   })
   password: string;
 
-  @Exclude()
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
-  createdAt: Date;
-
-  @Exclude()
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
-  updatedAt: Date;
-
-  @BeforeInsert()
-  createDates() {
-    this.createdAt = new Date();
-  }
-
-  @BeforeUpdate()
-  updateDates() {
-    this.updatedAt = new Date();
-  }
 
 }

@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class AppController {
@@ -7,7 +8,6 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  // @UseGuards(AuthGuard())
   root() {
     return {
       Name: 'KANMU',
