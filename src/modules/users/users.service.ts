@@ -38,7 +38,7 @@ export class UsersService {
       .getOne();
   }
 
-  async create(payload: RegisterPayload): Promise<void | Partial<User>> {
+  async create(payload: RegisterPayload): Promise<Partial<User>> {
     const existedUser = await this.getByEmail(payload.email);
     if (existedUser) {
       throw new NotAcceptableException('User with provided email already created.');
