@@ -1,10 +1,4 @@
-import {
-  ConflictException,
-  HttpException,
-  Injectable,
-  NotAcceptableException,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities';
@@ -12,12 +6,15 @@ import { EmailPayload, PasswordPayload, RegisterPayload } from '../auth/payloads
 import * as crypto from 'crypto';
 import { EmailService } from '../email/email.service';
 import { JwtService } from '@nestjs/jwt';
+import Players from '../../entities/Player.entity';
 
 @Injectable()
 export class UsersService {
 
   constructor(@InjectRepository(User)
               private readonly userRepository: Repository<User>,
+              @InjectRepository(Players)
+              private readonly playerRepository: Repository<Players>,
               private readonly emailService: EmailService,
               private readonly jwtService: JwtService,
   ) {
@@ -44,6 +41,8 @@ export class UsersService {
       throw new NotAcceptableException('User with provided email already created.');
     }
     const user = await this.userRepository.create(payload);
+    // const player = await  this.playerRepository.create()
+    // user.player = player
     try {
       return await this.save(user);
     } catch (error) {

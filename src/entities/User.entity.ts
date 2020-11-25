@@ -46,7 +46,6 @@ export default class User extends TimestampEntities {
   role: string;
 
   @OneToOne(() => Players,
-    player => player.id,
     {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',

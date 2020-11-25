@@ -6,7 +6,7 @@ import { User } from './index';
   name: 'players',
 })
 
-export default class Players extends TimestampEntities {
+export default class Player extends TimestampEntities {
 
   @Column({ unique: true })
   @PrimaryGeneratedColumn()
@@ -43,7 +43,7 @@ export default class Players extends TimestampEntities {
   continent: string;
 
   @OneToOne(() => User,
-    // user => user.player,
+    // user => user.playerId,
     {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
@@ -52,5 +52,5 @@ export default class Players extends TimestampEntities {
     },
   )
   @JoinTable()
-  userId: User;
+  user: User;
 }
