@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import {  DefaultAdminModule } from 'nestjs-admin';
+import { DefaultAdminModule } from 'nestjs-admin';
 
 // const AdminUser = require('nestjs-admin').AdminUserEntity;
 
@@ -15,7 +15,7 @@ import {  DefaultAdminModule } from 'nestjs-admin';
   // imports: [CoreModule, AuthModule],
   // exports: [CoreModule, AuthModule]
   imports: [
-    DefaultAdminModule
+    DefaultAdminModule,
   ],
   exports: [DefaultAdminModule],
 })

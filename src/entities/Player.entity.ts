@@ -24,13 +24,13 @@ export default class Player extends TimestampEntities {
   @Column({ length: 255 })
   slug: string;
 
-  @Column({ length: 255, name: 'logo_url'  })
+  @Column({ length: 255, name: 'logo_url' })
   logoUrl: string;
 
-  @Column({ length: 255, name: 'banner_url'  })
+  @Column({ length: 255, name: 'banner_url' })
   bannerUrl: string;
 
-  @Column({ length: 255, name: 'department'  })
+  @Column({ length: 255, name: 'department' })
   department: string;
 
   @Column({ length: 255, name: 'region' })

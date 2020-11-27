@@ -4,7 +4,7 @@ import {
   DNSHealthIndicator,
   HealthCheck,
   HealthCheckService,
-  MemoryHealthIndicator, TypeOrmHealthIndicator,
+  MemoryHealthIndicator,
 } from '@nestjs/terminus';
 
 

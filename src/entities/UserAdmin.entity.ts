@@ -9,8 +9,7 @@ import {
 } from 'typeorm';
 
 import { Exclude } from 'class-transformer';
-import { PasswordTransformer } from '../lib/password.transformer';
-import { Length, Min, MinLength } from 'class-validator';
+import { Length } from 'class-validator';
 import { TimestampEntities } from '../Generics/timestamp.entities';
 
 @Entity({

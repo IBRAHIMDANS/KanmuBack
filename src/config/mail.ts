@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
-export default  registerAs('mail', () => ({
+export default registerAs('mail', () => ({
   senderName: `${process.env.SENDER_NAME}`,
   senderEmail: `${process.env.SENDER_EMAIL}`,
   username: `${process.env.EMAIL_USERNAME}`,

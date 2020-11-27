@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
-export default  registerAs('database', () => ({
+export default registerAs('database', () => ({
   type: `${process.env.TYPEORM_CONNECTION}`,
   host: `${process.env.TYPEORM_HOST}`,
   username: `${process.env.TYPEORM_USERNAME}`,
@@ -10,5 +10,5 @@ export default  registerAs('database', () => ({
   logging: process.env.TYPEORM_LOGGING,
   migrationsRun: process.env.TYPEORM_MIGRATIONS_RUN,
   synchronize: process.env.TYPEORM_SYNCHRONIZE,
-  "entities": ["src/**/*.entity{.ts,.js}",'node_modules/nestjs-admin/**/*.entity.js'],
+  'entities': ['src/**/*.entity{.ts,.js}', 'node_modules/nestjs-admin/**/*.entity.js'],
 }));

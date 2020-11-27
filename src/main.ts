@@ -7,7 +7,6 @@ import { HttpExceptionFilter } from './shared/exceptions/filters/http-exception.
 import { BadRequestExceptionFilter } from './shared/exceptions/filters/bad.request.exception.filter';
 import { ResourceNotFoundExceptionFilter } from './shared/exceptions/filters/resource.not.found.exception.filter';
 import helmet from 'helmet';
-import  csurf from 'csurf';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

@@ -34,6 +34,6 @@ export class TimestampEntities {
 
   @BeforeRemove()
   deletedDate() {
-    this.deletedAt = new Date()
+    this.deletedAt = new Date();
   }
 }

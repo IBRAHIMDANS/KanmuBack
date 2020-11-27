@@ -50,10 +50,10 @@ export class UsersService {
     }
   }
 
-  async save(user: User): Promise< Partial<User>> {
+  async save(user: User): Promise<Partial<User>> {
     try {
       return await this.userRepository.save(user)
-        .then(async () => await this.emailService.sendMailRegister(user)).catch(e => e.message)
+        .then(async () => await this.emailService.sendMailRegister(user)).catch(e => e.message);
     } catch (error) {
       throw new ConflictException(error);
     }
