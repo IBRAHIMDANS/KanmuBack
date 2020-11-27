@@ -5,7 +5,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { TokenModel } from './dto/token.model';
-import { EmailPayload, PasswordPayload, RegisterPayload } from './payloads';
+import { EmailPayload, LoginPayload, PasswordPayload, RegisterPayload } from './payloads';
 import { User } from '../../entities';
 
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -26,7 +26,7 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Successful Login' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async login(@Request() req): Promise<TokenModel> {
+  async login(@Request() req, @Body() body: LoginPayload): Promise<TokenModel> {
     return await this.authService.createToken(req.user);
   }
 
