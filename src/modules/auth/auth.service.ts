@@ -3,7 +3,6 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../../entities';
 import { ConfigService } from '@nestjs/config';
-import Players from '../../entities/Player.entity';
 
 @Injectable()
 export class AuthService {
@@ -16,14 +15,17 @@ export class AuthService {
   }
 
 
-  async createToken(user: User): Promise<{ expiresIn: number; firstName: string; lastName: string; id: string; accessToken: string; email: string; player: Players }> {
+  async createToken(user: User): Promise<{
+    expiresIn: number; firstName: string; lastName: string; id: string; accessToken: string; email: string;
+    // player: Players
+  }> {
     return {
       expiresIn: this.configService.get('auth.expiresIn'),
       accessToken: this.jwtService.sign({ id: user.id }),
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      player: user.player,
+      // player: user.player,
       id: user.id,
     };
   }

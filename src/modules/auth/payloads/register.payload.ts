@@ -29,5 +29,4 @@ export class RegisterPayload {
   @IsOptional()
   role: string;
 
-
 }

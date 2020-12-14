@@ -11,6 +11,7 @@ export class PasswordPayload {
   @IsNotEmpty()
   base64EncodedConfirmPassword: string;
 
+  // remove unless property
   @ApiModelProperty({ required: true })
   @IsNotEmpty()
   id: string;

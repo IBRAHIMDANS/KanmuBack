@@ -1,5 +1,5 @@
 export enum UserRoleEnum {
-  ADMIN = 'admin',
-  USER = 'user',
-  SPONSOR = 'sponsor',
+  ADMIN = 'admin', // ADMINISTRATOR PLATEFORME
+  USER = 'user', // USER TYPE PLAYER TEAMS, ...
+  SPONSOR = 'sponsor', // USER TYPE SPONSORS, ...
 }

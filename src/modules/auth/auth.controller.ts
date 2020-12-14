@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 
 import { AuthService } from './auth.service';
@@ -10,6 +10,7 @@ import { User } from '../../entities';
 
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import UserDecorator from '../../decorators/user.decorator';
 
 @Controller('auth')
 @ApiTags('authentication')
@@ -35,7 +36,6 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async register(@Body() payload: RegisterPayload): Promise<Partial<User>> {
-    console.log(payload);
     return await this.userService.create(payload);
   }
 
@@ -44,17 +44,18 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Successful Registration' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async forgetPasswordIsNotConnect(@Body() payload: EmailPayload): Promise<User> {
+  async forgetPasswordIsNotConnect(@Body() payload: EmailPayload) {
     return await this.userService.SendMailForgetPassword(payload);
   }
 
   @Post('reset-password')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('')
   @ApiResponse({ status: 201, description: 'Successful Registration' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async resetPassword(@Body() payload: PasswordPayload) {
-    return await this.userService.resetPassword(payload);
+  async resetPassword(@Body() payload: PasswordPayload, @UserDecorator() user: Partial<User>) {
+    return await this.userService.resetPassword(payload, user);
   }
 
 }

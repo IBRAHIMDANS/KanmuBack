@@ -4,7 +4,7 @@ import { Exclude } from 'class-transformer';
 import { PasswordTransformer } from '../lib/password.transformer';
 import { Length } from 'class-validator';
 import { TimestampEntities } from '../Generics/timestamp.entities';
-import Players from './Player.entity';
+import Structure from './Structure.entity';
 import { UserRoleEnum } from '../enum/UserRoleEnum';
 
 @Entity({
@@ -45,7 +45,7 @@ export default class User extends TimestampEntities {
   })
   role: string;
 
-  @OneToOne(() => Players,
+  @OneToOne(() => Structure,
     {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
@@ -54,5 +54,5 @@ export default class User extends TimestampEntities {
     },
   )
   @JoinColumn()
-  player: Players;
+  structure: Structure;
 }

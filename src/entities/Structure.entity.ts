@@ -1,12 +1,11 @@
-import { Column, Entity, JoinTable, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { TimestampEntities } from '../Generics/timestamp.entities';
-import { User } from './index';
 
 @Entity({
-  name: 'players',
+  name: 'structures',
 })
 
-export default class Player extends TimestampEntities {
+export default class Structure extends TimestampEntities {
 
   @Column({ unique: true })
   @PrimaryGeneratedColumn()
@@ -42,15 +41,4 @@ export default class Player extends TimestampEntities {
   @Column({ length: 255, name: 'continent' })
   continent: string;
 
-  @OneToOne(() => User,
-    // user => user.playerId,
-    {
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-      cascade: true,
-      eager: true,
-    },
-  )
-  @JoinTable()
-  user: User;
 }

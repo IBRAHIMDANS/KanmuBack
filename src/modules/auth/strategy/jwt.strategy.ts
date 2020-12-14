@@ -21,7 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (timeDiff <= 0) {
       throw new UnauthorizedException();
     }
-
     const user = await this.usersService.get(id);
     if (!user) {
       throw new UnauthorizedException('user not found');

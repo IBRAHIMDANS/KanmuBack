@@ -12,7 +12,11 @@ import { JwtStrategy } from './strategy/jwt.strategy';
     HttpModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+  ],
   controllers: [AuthController],
   exports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),

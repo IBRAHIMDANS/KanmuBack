@@ -31,6 +31,7 @@
     "migration:create": "ts-node node_modules/.bin/typeorm migration:create",
     "migration:run": "ts-node ./node_modules/.bin/typeorm migration:run",
     "migration:revert": "ts-node ./node_modules/.bin/typeorm migration:revert",
+    "migration:generate": "ts-node node_modules/.bin/typeorm migration:generate",
     "cache:clear": "ts-node ./node_modules/.bin/typeorm cache:clear"
   },
   "dependencies": {

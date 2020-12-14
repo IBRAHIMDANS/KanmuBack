@@ -6,15 +6,15 @@ import { EmailPayload, PasswordPayload, RegisterPayload } from '../auth/payloads
 import * as crypto from 'crypto';
 import { EmailService } from '../email/email.service';
 import { JwtService } from '@nestjs/jwt';
-import Players from '../../entities/Player.entity';
+import Structure from '../../entities/Structure.entity';
 
 @Injectable()
 export class UsersService {
 
   constructor(@InjectRepository(User)
               private readonly userRepository: Repository<User>,
-              @InjectRepository(Players)
-              private readonly playerRepository: Repository<Players>,
+              @InjectRepository(Structure)
+              private readonly structureRepository: Repository<Structure>,
               private readonly emailService: EmailService,
               private readonly jwtService: JwtService,
   ) {
@@ -59,36 +59,24 @@ export class UsersService {
     }
   }
 
-  async SendMailForgetPassword(payload: EmailPayload): Promise<User> {
-    try {
-      // @ts-ignore
-      return this.userRepository.findOneOrFail({ where: { email: payload.email } }).then(async res => {
+  async SendMailForgetPassword(payload: EmailPayload) {
+    return await this.userRepository.findOne(
+      { where: { email: payload.email } })
+      .then(async res => {
+        delete res.deletedAt;
         const token = this.jwtService.sign({ id: res.id });
-        return await this.emailService.sendMailForgetPassword(res, token);
+        return await this.emailService.sendMailForgetPassword(res, token).then(() => true).catch(() => false);
       }).catch(err => {
-        throw new NotFoundException(err);
+        throw new NotFoundException(err.error);
       });
-    } catch (error) {
-
-      throw new ConflictException(error);
-    }
   }
 
-  async resetPassword(payload: PasswordPayload): Promise<User> {
-    try {
-      // @ts-ignore
-
-      return this.userRepository.findOneOrFail({ where: { email: payload.email } }).then(async res => {
-        console.log(res);
-        return await this.emailService.sendMailRegister(res);
-        return res;
-      }).catch(err => {
-        throw new NotFoundException(err);
-      });
-    } catch (error) {
-
-      throw new ConflictException(error);
-    }
+  async resetPassword(payload: PasswordPayload, user) {
+    return this.userRepository.findOneOrFail({ where: { email: user.email } }).then(async res => {
+      return await this.emailService.sendMailRegister(res);
+    }).catch(err => {
+      throw new NotFoundException(err);
+    });
   }
 
   async getByEmailAndPass(email: string, password: string): Promise<User> {

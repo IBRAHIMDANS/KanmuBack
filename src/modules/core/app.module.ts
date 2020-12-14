@@ -8,11 +8,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { HealthModule } from '../health/health.module';
 import { auth, database, mail } from '../../config';
-import { Player, User } from '../../entities';
+import { Structure, User } from '../../entities';
 import { AuthModule } from '../auth';
-import { BackOfficeModule } from '../backoffice/backoffice.module';
-import AdminUser from 'nestjs-admin/dist/src/adminUser/adminUser.entity';
-
+import { UsersModule } from '../users/users.module';
+import { StructureModule } from '../structure/structure.module';
 
 @Module({
   imports: [
@@ -25,16 +24,16 @@ import AdminUser from 'nestjs-admin/dist/src/adminUser/adminUser.entity';
         const db = config.get('database');
         db.entities = [
           User,
-          Player,
-          AdminUser,
+          Structure,
         ];
         return db;
       },
       inject: [ConfigService],
     }),
     AuthModule,
+    UsersModule,
+    StructureModule,
     HealthModule,
-    BackOfficeModule,
     {
       ...JwtModule.registerAsync({
         useFactory: async (configService: ConfigService) => {
@@ -55,13 +54,12 @@ import AdminUser from 'nestjs-admin/dist/src/adminUser/adminUser.entity';
           };
         },
         inject: [ConfigService],
-
       }), global: true,
     },
   ],
   controllers: [AppController],
   providers: [AppService],
-  exports: [JwtModule, BackOfficeModule],
+  exports: [JwtModule],
 
 })
 export class AppModule {
