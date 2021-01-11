@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@godaddy/terminus": "^4.4.1",
+    "@golevelup/nestjs-webhooks": "^0.2.6",
     "@nest-middlewares/helmet": "^6.0.0",
     "@nestjs/common": "^7.0.0",
     "@nestjs/config": "^0.5.0",

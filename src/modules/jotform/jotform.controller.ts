@@ -1,7 +1,14 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Res,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JotformService } from './jotform.service';
-import { Request } from 'express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('jotform') // @UseGuards(AuthGuard('jwt'))
 @ApiTags('jotform')
@@ -14,14 +21,14 @@ export class JotformController {
   @ApiResponse({ status: 201, description: 'Successful Registration' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @UseInterceptors(FilesInterceptor('files'))
+  async connect(@UploadedFiles() files, @Body() body, @Res() res) {
 
-  async connect(@Req() request: Request, @Res() response, @Body() body) {
-
-    console.log('======= response ==========');
-    console.log(response, '<=========');
     console.log('=================');
+    console.log(files, '<================= files');
     console.log(body, '<========= body');
-    return response;
+    console.log(res, '<========= Response');
+    return body;
   }
 
   // @Get() @ApiBearerAuth('') @ApiResponse(
