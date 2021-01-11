@@ -12,6 +12,7 @@ import { Structure, User } from '../../entities';
 import { AuthModule } from '../auth';
 import { UsersModule } from '../users/users.module';
 import { StructureModule } from '../structure/structure.module';
+import { JotformModule } from '../jotform/jotform.module';
 
 @Module({
   imports: [
@@ -23,26 +24,16 @@ import { StructureModule } from '../structure/structure.module';
       useFactory: (config: ConfigService) => {
         const db = config.get('database');
         db.entities = [
-          User,
-          Structure,
+          User, Structure,
         ];
         return db;
-      },
-      inject: [ConfigService],
-    }),
-    AuthModule,
-    UsersModule,
-    StructureModule,
-    HealthModule,
-    {
+      }, inject: [ConfigService],
+    }), AuthModule, UsersModule, StructureModule, HealthModule, JotformModule, {
       ...JwtModule.registerAsync({
         useFactory: async (configService: ConfigService) => {
           return {
-            secret: configService.get('auth.secret'),
-            signOptions: {
-              ...(
-                configService.get('auth.expiresIn')
-                  ? {
+            secret: configService.get('auth.secret'), signOptions: {
+              ...(configService.get('auth.expiresIn') ? {
                     expiresIn: configService.get('auth.expiresIn'),
                   }
                   : {
