@@ -1,8 +1,16 @@
-import { ConflictException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { MongoRepository, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities';
-import { EmailPayload, PasswordPayload, RegisterPayload } from '../auth/payloads';
+import {
+  EmailPayload,
+  PasswordPayload,
+  RegisterPayload,
+} from '../auth/payloads';
 import * as crypto from 'crypto';
 import { EmailService } from '../email/email.service';
 import { JwtService } from '@nestjs/jwt';
@@ -12,7 +20,7 @@ import Structure from '../../entities/Structure.entity';
 export class UsersService {
 
   constructor(@InjectRepository(User)
-              private readonly userRepository: Repository<User>,
+              private readonly userRepository: MongoRepository<User>,
               @InjectRepository(Structure)
               private readonly structureRepository: Repository<Structure>,
               private readonly emailService: EmailService,
@@ -36,10 +44,10 @@ export class UsersService {
   }
 
   async create(payload: RegisterPayload): Promise<Partial<User>> {
-    const existedUser = await this.getByEmail(payload.email);
-    if (existedUser) {
-      throw new NotAcceptableException('User with provided email already created.');
-    }
+    // const existedUser = await this.getByEmail(payload.email);
+    // if (existedUser) {
+    //   throw new NotAcceptableException('User with provided email already created.');
+    // }
     const user = await this.userRepository.create(payload);
     // const player = await  this.playerRepository.create()
     // user.player = player

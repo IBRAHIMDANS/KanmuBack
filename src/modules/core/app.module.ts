@@ -28,7 +28,13 @@ import { JotformModule } from '../jotform/jotform.module';
         ];
         return db;
       }, inject: [ConfigService],
-    }), AuthModule, UsersModule, StructureModule, HealthModule, JotformModule, {
+    }),
+    AuthModule,
+    UsersModule,
+    StructureModule,
+    HealthModule,
+    JotformModule,
+    {
       ...JwtModule.registerAsync({
         useFactory: async (configService: ConfigService) => {
           return {
