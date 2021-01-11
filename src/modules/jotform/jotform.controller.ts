@@ -1,4 +1,4 @@
-import { Controller, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JotformService } from './jotform.service';
 import { Request } from 'express';
@@ -15,12 +15,12 @@ export class JotformController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
 
-  async connect(@Req() request: Request, @Res() response) {
-    console.log('======= request ==========');
-    console.log(request, '<=========');
+  async connect(@Req() request: Request, @Res() response, @Body() body) {
+
     console.log('======= response ==========');
     console.log(response, '<=========');
     console.log('=================');
+    console.log(body, '<========= body');
     return response;
   }
 
