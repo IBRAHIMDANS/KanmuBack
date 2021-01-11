@@ -13,6 +13,7 @@ export class JotformController {
     { status: 201, description: 'Successful Registration' }) @ApiResponse(
     { status: 400, description: 'Bad Request' }) @ApiResponse(
     { status: 401, description: 'Unauthorized' })
+
   async connect(@Req() request: Request, @Body() body) {
     console.log(request, '<========== request');
     console.log(body, '<========== body');
