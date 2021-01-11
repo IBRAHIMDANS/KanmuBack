@@ -1,5 +1,8 @@
 import {
-  HttpException, HttpModuleOptions, HttpService, Injectable,
+  HttpException,
+  HttpModuleOptions,
+  HttpService,
+  Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -24,9 +27,14 @@ export class JotformService {
   }
 
   connect() {
-    return this.httpService.get(this.url, this.headers).
-      pipe(map(({ data }) => data), catchError((err: any) => throwError(
-        new HttpException({ message: err.response.statusText },
-          err.response.status))));
+    return this.httpService.get(this.url, this.headers).pipe(map(({ data }) => data), catchError((err: any) => throwError(
+      new HttpException({ message: err.response.statusText },
+        err.response.status))));
+  }
+
+  getData() {
+    return this.httpService.get(this.url, this.headers).pipe(map(({ data }) => data), catchError((err: any) => throwError(
+      new HttpException({ message: err.response.statusText },
+        err.response.status))));
   }
 }
