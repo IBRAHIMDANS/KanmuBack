@@ -1,20 +1,30 @@
-import { ConflictException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities';
-import { EmailPayload, PasswordPayload, RegisterPayload } from '../auth/payloads';
-import * as crypto from 'crypto';
+import {
+  EmailPayload,
+  PasswordPayload,
+  RegisterPayload,
+} from '../auth/payloads';
+import crypto from 'crypto';
 import { EmailService } from '../email/email.service';
 import { JwtService } from '@nestjs/jwt';
-import Structure from '../../entities/Structure.entity';
+import { passwordGenerator } from '../../lib/passwordGen';
+import { StructureService } from '../structure/structure.service';
+import { StructurePayload } from '../structure/payload/structure.payload';
 
 @Injectable()
 export class UsersService {
 
   constructor(@InjectRepository(User)
               private readonly userRepository: Repository<User>,
-              @InjectRepository(Structure)
-              private readonly structureRepository: Repository<Structure>,
+              private readonly structureService: StructureService,
               private readonly emailService: EmailService,
               private readonly jwtService: JwtService,
   ) {
@@ -35,25 +45,32 @@ export class UsersService {
       .getOne();
   }
 
-  async create(payload: RegisterPayload): Promise<Partial<User>> {
-    const existedUser = await this.getByEmail(payload.email);
-    if (existedUser) {
+  async create(userPayload: RegisterPayload, structurePayload?: StructurePayload): Promise<Partial<User>> {
+    const existedUser = await this.getByEmail(userPayload.email);
+    if(existedUser) {
       throw new NotAcceptableException('User with provided email already created.');
     }
-    const user = await this.userRepository.create(payload);
-    // const player = await  this.playerRepository.create()
-    // user.player = player
+    const user = await this.userRepository.create(userPayload);
+    const password = passwordGenerator();
+    user.password = password;
+    if(structurePayload) {
+      await this.structureService.create(structurePayload).then((structure) => {
+        user.structure = structure;
+      });
+    }
     try {
-      return await this.save(user);
+      return await this.save(user, password);
     } catch (error) {
       throw new ConflictException(error);
     }
   }
 
-  async save(user: User): Promise<Partial<User>> {
+  async save(user: User, password: string): Promise<Partial<User>> {
     try {
       return await this.userRepository.save(user)
-        .then(async () => await this.emailService.sendMailRegister(user)).catch(e => e.message);
+        .then(async () =>
+          await this.emailService.sendMailRegister(user, password))
+        .catch(e => e.message);
     } catch (error) {
       throw new ConflictException(error);
     }

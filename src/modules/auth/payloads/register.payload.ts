@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
 
 export class RegisterPayload {
@@ -15,18 +21,19 @@ export class RegisterPayload {
   @IsNotEmpty()
   lastName: string;
 
-  @ApiModelProperty()
-  @IsString()
-  slug: string;
-
-  @ApiModelProperty({ required: true })
-  @IsString()
-  @MinLength(5)
-  password: string;
+  // @ApiModelProperty()
+  // @IsString()
+  // slug: string;
 
   @ApiModelProperty({ required: false })
   @IsString()
   @IsOptional()
-  role: string;
+  @MinLength(5)
+  password?: string;
+
+  @ApiModelProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  role?: string;
 
 }

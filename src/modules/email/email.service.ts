@@ -11,7 +11,7 @@ export class EmailService {
     this.transporter = mailjet.connect(this.config.get('mail.username'), this.config.get('mail.password'));
   }
 
-  async sendMailRegister(user: User) {
+  async sendMailRegister(user: User, password?: string) {
     this.transporter
       .post('send', { 'version': 'v3.1' })
       .request({
@@ -30,7 +30,7 @@ export class EmailService {
             'TemplateID': 1835785,
             'TemplateLanguage': true,
             'Subject': 'Welcome',
-            'Variables': user,
+            'Variables': { user: user, password: password },
           },
         ],
       }).then((result) => {

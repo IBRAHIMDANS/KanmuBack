@@ -3,3 +3,9 @@ export enum UserRoleEnum {
   USER = 'user', // USER TYPE PLAYER TEAMS, ...
   SPONSOR = 'sponsor', // USER TYPE SPONSORS, ...
 }
+
+export enum UserPrefixRoleEnum {
+  MR = 'Mr',
+  MME = 'Mme',
+  Mlle = 'Mlle',
+}

@@ -25,20 +25,17 @@ export class AuthService {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      // player: user.player,
       id: user.id,
     };
   }
 
   async validateUser(email: string, pass: string): Promise<any> {
-    // const user = await this.usersService.findOne(email);
-    // if (user && user.password === pass) {
-    //   const { password, ...result } = user;
-    //   return result;
-    // }
-    // return null;
     const user = await this.usersService.getByEmailAndPass(email, pass);
-    if (!user) {
+
+    if(user.isActive === false) {
+      throw new UnauthorizedException('user is inactive!');
+    }
+    if(!user) {
       throw new UnauthorizedException('Wrong login combination!');
     }
     return user;

@@ -5,7 +5,7 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { TokenModel } from './dto/token.model';
-import { EmailPayload, LoginPayload, PasswordPayload, RegisterPayload } from './payloads';
+import { EmailPayload, LoginPayload, PasswordPayload } from './payloads';
 import { User } from '../../entities';
 
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -31,13 +31,14 @@ export class AuthController {
     return await this.authService.createToken(req.user);
   }
 
-  @Post('register')
-  @ApiResponse({ status: 201, description: 'Successful Registration' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async register(@Body() payload: RegisterPayload): Promise<Partial<User>> {
-    return await this.userService.create(payload);
-  }
+  //
+  // @Post('register')
+  // @ApiResponse({ status: 201, description: 'Successful Registration' })
+  // @ApiResponse({ status: 400, description: 'Bad Request' })
+  // @ApiResponse({ status: 401, description: 'Unauthorized' })
+  // async register(@Body() payload: RegisterPayload): Promise<Partial<User>> {
+  //   return await this.userService.create(payload);
+  // }
 
   @Post('send-mail-forget')
   // @UseGuards(LocalAuthGuard)

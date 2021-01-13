@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { TimestampEntities } from '../Generics/timestamp.entities';
 
 @Entity({
@@ -11,34 +16,39 @@ export default class Structure extends TimestampEntities {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({ length: 255 })
-  title: string;
+  @Column({ length: 255, name: 'name' })
+  name?: string;
 
-  @Column({ length: 255, name: 'admin_id' })
-  adminId: string;
+
+  @CreateDateColumn({
+    name: 'created_at_structure',
+    type: 'timestamp',
+    update: false,
+  })
+  createdAtStructure?: Date;
+
+  @Column({ length: 255, name: 'number_member' })
+  numberMember?: string;
+
 
   @Column({ length: 255 })
   description: string;
 
-  @Column({ length: 255 })
-  slug: string;
+  @Column({ type: 'simple-array', name: 'game_list', nullable: true })
+  gameList?: string[];
+
 
   @Column({ length: 255, name: 'logo_url' })
-  logoUrl: string;
+  logoUrl?: string;
 
   @Column({ length: 255, name: 'banner_url' })
-  bannerUrl: string;
+  bannerUrl?: string;
 
-  @Column({ length: 255, name: 'department' })
-  department: string;
 
-  @Column({ length: 255, name: 'region' })
-  region: string;
+  @Column({ length: 255, name: 'address' })
+  address?: string;
 
-  @Column({ length: 255, name: 'state' })
-  state: string;
-
-  @Column({ length: 255, name: 'continent' })
-  continent: string;
+  @Column({ type: 'simple-array', name: 'social_networks', nullable: true })
+  socialNetworks?: string[];
 
 }

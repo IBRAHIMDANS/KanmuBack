@@ -10,7 +10,7 @@ import { Structure } from '../../entities';
     TypeOrmModule.forFeature([Structure]),
   ],
   providers: [StructureService],
-  exports: [StructureModule],
+  exports: [StructureModule, StructureService],
 })
 export class StructureModule {
 }

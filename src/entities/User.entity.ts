@@ -1,4 +1,10 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { Exclude } from 'class-transformer';
 import { PasswordTransformer } from '../lib/password.transformer';
@@ -26,8 +32,8 @@ export default class User extends TimestampEntities {
   @Column({ length: 255 })
   email: string;
 
-  @Column({ length: 255 })
-  slug: string;
+  // @Column({ length: 255 })
+  // slug: string;
 
   @Exclude()
   @Length(4)
@@ -36,7 +42,7 @@ export default class User extends TimestampEntities {
     length: 255,
     transformer: new PasswordTransformer(),
   })
-  password: string;
+  password?: string;
 
   @Column({
     type: 'enum',
@@ -44,6 +50,12 @@ export default class User extends TimestampEntities {
     default: UserRoleEnum.USER,
   })
   role: string;
+
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  isActive: boolean;
 
   @OneToOne(() => Structure,
     {
@@ -55,4 +67,5 @@ export default class User extends TimestampEntities {
   )
   @JoinColumn()
   structure: Structure;
+  user: Structure[][];
 }

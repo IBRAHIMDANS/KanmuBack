@@ -24,11 +24,8 @@ export class JotformController {
   @UseInterceptors(FilesInterceptor('files'))
   async connect(@UploadedFiles() files, @Body() body, @Res() res) {
 
-    console.log('=================');
-    console.log(files, '<================= files');
-    console.log(body, '<========= body');
-    console.log(res, '<========= Response');
-    return body;
+
+    return await this.jotformService.createStrucutreByJotform(JSON.parse(body.rawRequest));
   }
 
   // @Get() @ApiBearerAuth('') @ApiResponse(
