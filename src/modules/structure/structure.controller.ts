@@ -18,9 +18,8 @@ export class StructureController {
   @ApiResponse({ status: 201, description: 'Successful Registration' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async resetPassword(@UserDecorator() user: Partial<User>, @Body() payload: Partial<StructurePayload>) {
-    console.log(payload);
-    return user;
+  async updateStructure(@UserDecorator() user: Partial<User>, @Body() payload: Partial<StructurePayload>) {
+    return this.structureService.update(payload, user);
   }
 
   @Get()

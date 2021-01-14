@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import Structure from '../../entities/Structure.entity';
 import { Repository } from 'typeorm';
 import { StructurePayload } from './payload/structure.payload';
+import { User } from '../../entities';
 
 @Injectable()
 export class StructureService {
@@ -32,6 +33,18 @@ export class StructureService {
   async find(id: number) {
     try {
       return await this.structureRepository.findOneOrFail(id);
+    } catch (error) {
+      throw new ConflictException(error);
+    }
+  }
+
+  async update(structure?: Partial<Structure>, user?: Partial<User>) {
+    try {
+      return await this.structureRepository
+        .createQueryBuilder()
+        .update(structure)
+        .where({ id: user.structure.id })
+        .execute();
     } catch (error) {
       throw new ConflictException(error);
     }
