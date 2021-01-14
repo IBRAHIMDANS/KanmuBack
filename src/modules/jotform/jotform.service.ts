@@ -104,16 +104,16 @@ export class JotformService {
 
     } = body;
     const newCreatedAtSt = new Date(
-      Number(q19_createAtAssociation.year),
-      Number(q19_createAtAssociation.month),
-      Number(q19_createAtAssociation.day),
+      Number(q19_createAtAssociation?.year),
+      Number(q19_createAtAssociation?.month),
+      Number(q19_createAtAssociation?.day),
     );
-    const newAddress = `${q35_adresse.addr_line1} ${q35_adresse.postal} ${q35_adresse.city} ${q35_adresse.state} ${q35_adresse.country}`;
+    const newAddress = `${q35_adresse?.addr_line1} ${q35_adresse?.postal} ${q35_adresse?.city} ${q35_adresse?.state} ${q35_adresse?.country}`;
 
     await this.userService.create({
       email: q14_emailAssociation,
-      lastName: q40_nomEtPrenom.last,
-      firstName: q40_nomEtPrenom.first,
+      lastName: q40_nomEtPrenom?.last,
+      firstName: q40_nomEtPrenom?.first,
       role: UserRoleEnum.USER,
     }, {
       name: q6_nomAssociation,
