@@ -7,17 +7,14 @@ import {
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities';
-import {
-  EmailPayload,
-  PasswordPayload,
-  RegisterPayload,
-} from '../auth/payloads';
+import { EmailPayload, RegisterPayload } from '../auth/payloads';
 import crypto from 'crypto';
 import { EmailService } from '../email/email.service';
 import { JwtService } from '@nestjs/jwt';
 import { passwordGenerator } from '../../lib/passwordGen';
 import { StructureService } from '../structure/structure.service';
 import { StructurePayload } from '../structure/payload/structure.payload';
+import { RegisterPasswordPayload } from '../auth/payloads/registerPassword.payload';
 
 @Injectable()
 export class UsersService {
@@ -88,20 +85,61 @@ export class UsersService {
       });
   }
 
-  async resetPassword(payload: PasswordPayload, user) {
-    return this.userRepository.findOneOrFail({ where: { email: user.email } }).then(async res => {
-      return await this.emailService.sendMailRegister(res);
-    }).catch(err => {
-      throw new NotFoundException(err);
-    });
+  // async resetPassword(payload: PasswordPayload, user) {
+  //   return this.userRepository.findOneOrFail({ where: { email: user.email } }).then(async res => {
+  //     return await this.emailService.sendMailRegister(res);
+  //   }).catch(err => {
+  //     throw new NotFoundException(err);
+  //   });
+  // }
+
+  async resetPasswordRegister(payload: RegisterPasswordPayload) {
+    if(payload.newPassword === payload.confirmNewPassword) {
+      const passHash = crypto.createHmac('sha256', payload.password)
+        .digest('hex');
+      const newPassHash = crypto.createHmac('sha256', payload.newPassword)
+        .digest('hex');
+      return await this.userRepository.createQueryBuilder('users')
+        .where('users.email = :email and users.password = :password')
+        .setParameter('email', payload.email)
+        .setParameter('password', newPassHash)
+        .getOne().then(async res => {
+          if(res === undefined) {
+            throw new NotFoundException(res);
+          }
+          return await this.userRepository.createQueryBuilder('users')
+            .update()
+            .set({ password: newPassHash })
+            .set({ isActive: true })
+            .returning(['firstName', 'lastName', 'email'])
+            .execute()
+            .then(result => {
+              console.log('result ==>', result);
+              return result.raw[0];
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          // .where("id = :id", { id: 1 })
+        });
+    } else {
+
+    }
+
+    // this.userRepository.findOneOrFail({ where: { email: payload.email }, withDeleted:false }).then(async res => {
+    //   console.log(res);
+    // }).catch(err => {
+    //   throw new NotFoundException(err);
+    // });
   }
 
   async getByEmailAndPass(email: string, password: string): Promise<User> {
     const passHash = crypto.createHmac('sha256', password).digest('hex');
     return await this.userRepository.createQueryBuilder('users')
-      .where('users.email = :email and users.password = :password')
+      .where('users.email = :email and users.password = :password and users.isActive= :isActive')
       .setParameter('email', email)
       .setParameter('password', passHash)
+      .setParameter('isActive', true)
       .getOne();
   }
 }

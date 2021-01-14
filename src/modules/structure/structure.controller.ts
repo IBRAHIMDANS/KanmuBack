@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import UserDecorator from '../../decorators/user.decorator';
 import { User } from '../../entities';
@@ -21,5 +21,14 @@ export class StructureController {
   async resetPassword(@UserDecorator() user: Partial<User>, @Body() payload: Partial<StructurePayload>) {
     console.log(payload);
     return user;
+  }
+
+  @Get()
+  @ApiBearerAuth('')
+  @ApiResponse({ status: 201, description: 'Successful Registration' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async get(@UserDecorator() user: Partial<User>) {
+    return this.structureService.find(+user.structure.id);
   }
 }

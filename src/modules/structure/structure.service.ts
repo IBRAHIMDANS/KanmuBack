@@ -28,4 +28,12 @@ export class StructureService {
       throw new ConflictException(error);
     }
   }
+
+  async find(id: number) {
+    try {
+      return await this.structureRepository.findOneOrFail(id);
+    } catch (error) {
+      throw new ConflictException(error);
+    }
+  }
 }

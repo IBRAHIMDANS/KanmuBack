@@ -16,7 +16,7 @@ export class AuthService {
 
 
   async createToken(user: User): Promise<{
-    expiresIn: number; firstName: string; lastName: string; id: string; accessToken: string; email: string;
+    expiresIn: string; firstName: string; lastName: string; id: string; accessToken: string; email: string;
     // player: Players
   }> {
     return {
@@ -31,12 +31,12 @@ export class AuthService {
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.getByEmailAndPass(email, pass);
-
-    if(user.isActive === false) {
-      throw new UnauthorizedException('user is inactive!');
-    }
+    // console.log(user);
+    // if(user.isActive === false) {
+    //   throw new UnauthorizedException('user is inactive!');
+    // }
     if(!user) {
-      throw new UnauthorizedException('Wrong login combination!');
+      throw new UnauthorizedException('Wrong login combination! or user are is not active');
     }
     return user;
 

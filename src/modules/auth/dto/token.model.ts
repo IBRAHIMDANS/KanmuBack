@@ -1,5 +1,5 @@
 export class TokenModel {
-  expiresIn: number;
+  expiresIn: string;
   accessToken: string;
   id: string;
   firstName: string;

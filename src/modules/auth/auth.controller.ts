@@ -5,12 +5,9 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { TokenModel } from './dto/token.model';
-import { EmailPayload, LoginPayload, PasswordPayload } from './payloads';
-import { User } from '../../entities';
-
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { EmailPayload, LoginPayload } from './payloads';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import UserDecorator from '../../decorators/user.decorator';
+import { RegisterPasswordPayload } from './payloads/registerPassword.payload';
 
 @Controller('auth')
 @ApiTags('authentication')
@@ -50,13 +47,13 @@ export class AuthController {
   }
 
   @Post('reset-password')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('')
   @ApiResponse({ status: 201, description: 'Successful Registration' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async resetPassword(@Body() payload: PasswordPayload, @UserDecorator() user: Partial<User>) {
-    return await this.userService.resetPassword(payload, user);
+  async resetPassword(@Body() payload: RegisterPasswordPayload) {
+    return await this.userService.resetPasswordRegister(payload);
   }
 
 }

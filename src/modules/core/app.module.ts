@@ -37,7 +37,7 @@ import { JotformModule } from '../jotform/jotform.module';
                     expiresIn: configService.get('auth.expiresIn'),
                   }
                   : {
-                    expiresIn: 3600,
+                    expiresIn: '24h',
                   }
               ),
             },

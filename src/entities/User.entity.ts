@@ -67,5 +67,4 @@ export default class User extends TimestampEntities {
   )
   @JoinColumn()
   structure: Structure;
-  user: Structure[][];
 }

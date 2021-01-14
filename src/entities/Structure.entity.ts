@@ -51,4 +51,14 @@ export default class Structure extends TimestampEntities {
   @Column({ type: 'simple-array', name: 'social_networks', nullable: true })
   socialNetworks?: string[];
 
+//   @OneToOne(() => User,
+//     {
+//       onDelete: 'CASCADE',
+//       onUpdate: 'CASCADE',
+//       cascade: true,
+//       eager: true,
+//     },
+//   )
+//   @JoinColumn()
+//   user: User;
 }
