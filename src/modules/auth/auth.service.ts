@@ -36,7 +36,7 @@ export class AuthService {
     //   throw new UnauthorizedException('user is inactive!');
     // }
     if(!user) {
-      throw new UnauthorizedException('Wrong login combination! or user are is not active');
+      throw new UnauthorizedException('Wrong login combination! user are is not active or exist');
     }
     return user;
 

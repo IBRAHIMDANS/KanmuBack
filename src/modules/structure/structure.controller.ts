@@ -1,14 +1,13 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import UserDecorator from '../../decorators/user.decorator';
 import { User } from '../../entities';
 import { StructurePayload } from './payload/structure.payload';
 import { StructureService } from './structure.service';
-import { AuthGuard } from '@nestjs/passport';
 
-@Controller('structure')
-@UseGuards(AuthGuard('jwt'))
-@ApiTags('structure')
+@Controller('structures')
+// @UseGuards(AuthGuard('jwt'))
+@ApiTags('structures')
 export class StructureController {
   constructor(private readonly structureService: StructureService) {
   }
@@ -28,6 +27,17 @@ export class StructureController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async get(@UserDecorator() user: Partial<User>) {
+
     return this.structureService.find(+user.structure.id);
+  }
+
+  @Get('all')
+  @ApiBearerAuth('')
+  @ApiResponse({ status: 201, description: 'Successful Registration' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async search(@Query() query) {
+    console.log(query, '   <==== query ');
+    return this.structureService.findAll(query);
   }
 }

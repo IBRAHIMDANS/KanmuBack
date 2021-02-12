@@ -23,8 +23,6 @@ export class JotformController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseInterceptors(FilesInterceptor('files'))
   async connect(@UploadedFiles() files, @Body() body, @Res() res) {
-
-
     return await this.jotformService.createStrucutreByJotform(JSON.parse(body.rawRequest));
   }
 

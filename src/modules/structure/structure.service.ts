@@ -38,6 +38,15 @@ export class StructureService {
     }
   }
 
+  async findAll(query?: any) {
+    const { page, limit = 10 } = query;
+    try {
+      return await this.structureRepository.findAndCount({ skip: 1 });
+    } catch (error) {
+      throw new ConflictException(error);
+    }
+  }
+
   async update(structure?: Partial<Structure>, user?: Partial<User>) {
     try {
       return await this.structureRepository

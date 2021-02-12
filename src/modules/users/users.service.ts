@@ -51,6 +51,7 @@ export class UsersService {
     const password = passwordGenerator();
     user.password = password;
     if(structurePayload) {
+      console.log(structurePayload);
       await this.structureService.create(structurePayload).then((structure) => {
         user.structure = structure;
       });

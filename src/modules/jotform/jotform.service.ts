@@ -89,29 +89,26 @@ export class JotformService {
     // }
     const {
       q6_nomAssociation,
-      q35_adresse,
+      q35_adresseDe,
       q19_createAtAssociation,
       q20_numberMember,
       q40_nomEtPrenom,
-      q14_emailAssociation,
+      q41_emailDe41,
       q16_description,
       q22_gameList = [],
-      q25_lesquels,
       q34_lesReseaux34 = [],
-      q26_objectives,
       banniereDe,
       logoDe29,
-
     } = body;
     const newCreatedAtSt = new Date(
       Number(q19_createAtAssociation?.year),
       Number(q19_createAtAssociation?.month),
       Number(q19_createAtAssociation?.day),
     );
-    const newAddress = `${q35_adresse?.addr_line1} ${q35_adresse?.postal} ${q35_adresse?.city} ${q35_adresse?.state} ${q35_adresse?.country}`;
+    const newAddress = `${q35_adresseDe?.addr_line1} ${q35_adresseDe?.postal} ${q35_adresseDe?.city} ${q35_adresseDe?.state} ${q35_adresseDe?.country}`;
 
-    await this.userService.create({
-      email: q14_emailAssociation,
+    return await this.userService.create({
+      email: q41_emailDe41,
       lastName: q40_nomEtPrenom?.last,
       firstName: q40_nomEtPrenom?.first,
       role: UserRoleEnum.USER,
@@ -126,7 +123,6 @@ export class JotformService {
       numberMember: q20_numberMember,
       socialNetworks: q34_lesReseaux34,
     });
-    return body;
   }
 
 
