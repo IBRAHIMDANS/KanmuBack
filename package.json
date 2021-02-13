@@ -35,6 +35,11 @@
     "cache:clear": "ts-node ./node_modules/.bin/typeorm cache:clear"
   },
   "dependencies": {
+    "admin-bro": "^2.9.0",
+    "@admin-bro/express": "^3.1.0",
+    "@admin-bro/nestjs": "^1.0.0",
+    "admin-bro-expressjs": "^2.1.1",
+    "admin-bro-typeorm": "^0.1.6-alpha.9",
     "@godaddy/terminus": "^4.4.1",
     "@golevelup/nestjs-webhooks": "^0.2.6",
     "@nest-middlewares/helmet": "^6.0.0",
@@ -50,6 +55,9 @@
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "crypto-js": "^4.0.0",
+    "express": "^4.17.1",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.17.1",
     "helmet": "^4.2.0",
     "jotform": "^0.1.5",
     "nestjs-admin": "^0.4.0",
