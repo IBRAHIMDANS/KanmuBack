@@ -5,6 +5,7 @@ import AdminBro from 'admin-bro';
 
 import * as AdminBroExpress from 'admin-bro-expressjs';
 import { validate } from 'class-validator';
+import AdminUser from '../entities/AdminUser.entity';
 
 
 export async function setupAdminPanel(app: INestApplication): Promise<void> {
@@ -14,7 +15,10 @@ export async function setupAdminPanel(app: INestApplication): Promise<void> {
 
   const adminBro = new AdminBro({
     resources: [
-      // AdminUserResource
+      {
+        resource: AdminUser,
+        options: {},
+      },
     ],
     rootPath: '/admin',
     branding: {
@@ -22,12 +26,10 @@ export async function setupAdminPanel(app: INestApplication): Promise<void> {
       logo: false,
       softwareBrothers: false,
     },
-    // loginPath: '/adminPanel/login',
-    // logoutPath: '/adminPanel/logout',
   });
 
   const adminRouter = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
-    // authenticate: (email: string) => email === 'test',
+    authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
     cookieName: 'test',
     cookiePassword: 'testPass',
   });

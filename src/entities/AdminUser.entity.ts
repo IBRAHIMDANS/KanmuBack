@@ -9,16 +9,16 @@ export default class AdminUser extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 255, name: 'first_name' })
+  @Column()
   firstName: string;
 
-  @Column({ length: 255, name: 'last_name' })
+  @Column()
   lastName: string;
 
-  @Column({ length: 255 })
+  @Column()
   email: string;
 
-  @Column({ name: 'password' })
+  @Column()
   password?: string;
 
 }
