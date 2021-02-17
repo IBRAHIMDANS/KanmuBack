@@ -13,6 +13,12 @@ import { AuthModule } from '../auth';
 import { UsersModule } from '../users/users.module';
 import { StructureModule } from '../structure/structure.module';
 import { JotformModule } from '../jotform/jotform.module';
+import AdminBro from 'admin-bro';
+import { Database, Resource } from 'admin-bro-typeorm';
+import { validate } from 'class-validator';
+import { AdminModule } from '@admin-bro/nestjs';
+import AdminUser from '../../entities/AdminUser.entity';
+import { AdminModuleOptions } from '@admin-bro/nestjs/types/interfaces/admin-module-options.interface';
 
 // admin Bro
 // import AdminBro from 'admin-bro';
@@ -21,21 +27,23 @@ import { JotformModule } from '../jotform/jotform.module';
 // import AdminUser from '../../entities/AdminUser.entity';
 // import { validate } from 'class-validator';
 
+AdminBro.registerAdapter({ Database, Resource });
+Resource.validate = validate;
 
-//  pkg.json
-// "admin-bro": "^3.4.0",
-// //    "@admin-bro/typeorm": "^1.4.0",
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [database, auth, mail],
       isGlobal: true,
     }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'public'),
+    // }),
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => {
         const db = config.get('database');
         db.entities = [
-          User, Structure,
+          User, Structure, AdminUser,
         ];
         return db;
       }, inject: [ConfigService],
@@ -64,19 +72,32 @@ import { JotformModule } from '../jotform/jotform.module';
         inject: [ConfigService],
       }), global: true,
     },
-    // AdminModule.createAdmin({
-    //   adminBroOptions: {
-    //     rootPath: '/admin',
-    //     resources: [
-    //       { resource: AdminUser, option: {} }
-    //       ],
-    //   },
-    //   auth: {
-    //     authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
-    //     cookieName: 'test',
-    //     cookiePassword: 'testPass',
-    //   },
-    // }),
+    AdminModule.createAdminAsync({
+      imports: [
+        TypeOrmModule.forFeature([AdminUser]),
+      ],
+      inject: [
+        ConfigService,
+      ],
+      useFactory(args: any): Promise<AdminModuleOptions> | AdminModuleOptions {
+        return {
+          adminBroOptions: {
+            resources: [AdminUser],
+            rootPath: '/admin',
+            branding: {
+              companyName: 'Admin | KANMU',
+              logo: false,
+              softwareBrothers: false,
+            },
+          },
+          auth: {
+            authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
+            cookieName: 'test',
+            cookiePassword: 'testPass',
+          },
+        };
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

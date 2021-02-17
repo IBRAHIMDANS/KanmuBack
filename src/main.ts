@@ -7,7 +7,8 @@ import { HttpExceptionFilter } from './shared/exceptions/filters/http-exception.
 import { BadRequestExceptionFilter } from './shared/exceptions/filters/bad.request.exception.filter';
 import { ResourceNotFoundExceptionFilter } from './shared/exceptions/filters/resource.not.found.exception.filter';
 import helmet from 'helmet';
-import { setupAdminPanel } from './admin-panel/admin-panel.plugin';
+import { join } from 'path';
+import favicon from 'serve-favicon';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -33,11 +34,13 @@ async function bootstrap() {
   );
   // const globalPrefix = 'api';
   // app.setGlobalPrefix(globalPrefix);
-
-  // config d'adminBro
-  await setupAdminPanel(app);
-
   // config de swagger
+
+  const iconPath = join(__dirname, '../public', 'favicon.ico');
+  const options = {
+    maxAge: 200 * 60 * 60 * 24 * 1000,
+  };
+  app.use(favicon(iconPath, options));
   setupSwagger(app);
   await app.listen(process.env.PORT || 3000);
 }

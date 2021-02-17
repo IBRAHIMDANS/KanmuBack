@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://kanmu.herokuapp.com/" target="blank"><img src="./src/static/img/logo.png" width="320" alt="Nest Logo" /></a>
+  <a href="https://kanmu.herokuapp.com/" target="blank"><img src="public/img/logo.png" width="320" alt="Nest Logo" /></a>
 </p>
 <h1 align="center" >KANMU APP</h1>
   
