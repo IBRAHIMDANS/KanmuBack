@@ -15,6 +15,8 @@ import { StructureModule } from "../structure/structure.module";
 import { JotformModule } from "../jotform/jotform.module";
 import { GameModule } from "../game/game.module";
 
+import { DefaultAdminModule } from "nestjs-admin";
+
 // import { Database, Resource } from "admin-bro-typeorm";
 // import { AdminModule } from "@admin-bro/nestjs";
 // import { validate } from "class-validator";
@@ -36,6 +38,8 @@ import { GameModule } from "../game/game.module";
       useFactory: (config: ConfigService) => {
         const db = config.get("database");
         db.entities = [
+     //     User, Structure, "node_modules/nestjs-admin/**/*.entity.js"
+          // AdminUserEntity
           // User, Structure, AdminUser, Game
           "dist/**/*.entity.js"
         ];
