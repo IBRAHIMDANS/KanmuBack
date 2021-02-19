@@ -37,6 +37,7 @@
   "dependencies": {
     "@admin-bro/express": "^3.1.0",
     "@admin-bro/nestjs": "^1.0.0",
+    "@admin-bro/typeorm": "^1.4.0",
     "@godaddy/terminus": "^4.4.1",
     "@golevelup/nestjs-webhooks": "^0.2.6",
     "@nest-middlewares/helmet": "^6.0.0",
@@ -50,7 +51,7 @@
     "@nestjs/swagger": "^4.6.1",
     "@nestjs/terminus": "^7.0.1",
     "@nestjs/typeorm": "^7.1.4",
-    "admin-bro": "^2.9.0",
+    "admin-bro": "^3.4.0",
     "admin-bro-expressjs": "^2.1.1",
     "admin-bro-typeorm": "^0.1.6-alpha.9",
     "class-transformer": "^0.3.1",

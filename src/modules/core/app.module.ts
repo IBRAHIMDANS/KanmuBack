@@ -1,31 +1,24 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import AdminBro from "admin-bro";
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
 
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { HealthModule } from '../health/health.module';
-import { auth, database, mail } from '../../config';
-import { Structure, User } from '../../entities';
-import { AuthModule } from '../auth';
-import { UsersModule } from '../users/users.module';
-import { StructureModule } from '../structure/structure.module';
-import { JotformModule } from '../jotform/jotform.module';
-import AdminBro from 'admin-bro';
-import { Database, Resource } from 'admin-bro-typeorm';
-import { validate } from 'class-validator';
-import { AdminModule } from '@admin-bro/nestjs';
-import AdminUser from '../../entities/AdminUser.entity';
-import { AdminModuleOptions } from '@admin-bro/nestjs/types/interfaces/admin-module-options.interface';
-
-// admin Bro
-// import AdminBro from 'admin-bro';
-// import { AdminModule } from '@admin-bro/nestjs';
-// import { Database, Resource } from '@admin-bro/typeorm';
-// import AdminUser from '../../entities/AdminUser.entity';
-// import { validate } from 'class-validator';
+import { HealthModule } from "../health/health.module";
+import { auth, database, mail } from "../../config";
+import { Structure, User } from "../../entities";
+import { AuthModule } from "../auth";
+import { UsersModule } from "../users/users.module";
+import { StructureModule } from "../structure/structure.module";
+import { JotformModule } from "../jotform/jotform.module";
+import { Database, Resource } from "admin-bro-typeorm";
+import { validate } from "class-validator";
+import { AdminModule } from "@admin-bro/nestjs";
+import AdminUser from "../../entities/AdminUser.entity";
+import { AdminModuleOptions } from "@admin-bro/nestjs/types/interfaces/admin-module-options.interface";
 
 AdminBro.registerAdapter({ Database, Resource });
 Resource.validate = validate;
@@ -34,19 +27,19 @@ Resource.validate = validate;
   imports: [
     ConfigModule.forRoot({
       load: [database, auth, mail],
-      isGlobal: true,
+      isGlobal: true
     }),
     // ServeStaticModule.forRoot({
     //   rootPath: join(__dirname, '..', 'public'),
     // }),
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => {
-        const db = config.get('database');
+        const db = config.get("database");
         db.entities = [
-          User, Structure, AdminUser,
+          User, Structure, AdminUser
         ];
         return db;
-      }, inject: [ConfigService],
+      }, inject: [ConfigService]
     }),
     AuthModule,
     UsersModule,
@@ -57,51 +50,51 @@ Resource.validate = validate;
       ...JwtModule.registerAsync({
         useFactory: async (configService: ConfigService) => {
           return {
-            secret: configService.get('auth.secret'), signOptions: {
-              ...(configService.get('auth.expiresIn') ? {
-                    expiresIn: configService.get('auth.expiresIn'),
+            secret: configService.get("auth.secret"), signOptions: {
+              ...(configService.get("auth.expiresIn") ? {
+                    expiresIn: configService.get("auth.expiresIn")
                   }
                   : {
-                    expiresIn: '24h',
+                    expiresIn: "24h"
                   }
-              ),
-            },
+              )
+            }
 
           };
         },
-        inject: [ConfigService],
-      }), global: true,
+        inject: [ConfigService]
+      }), global: true
     },
     AdminModule.createAdminAsync({
       imports: [
-        TypeOrmModule.forFeature([AdminUser]),
+        TypeOrmModule.forFeature([AdminUser])
       ],
       inject: [
-        ConfigService,
+        ConfigService
       ],
       useFactory(args: any): Promise<AdminModuleOptions> | AdminModuleOptions {
         return {
           adminBroOptions: {
             resources: [AdminUser],
-            rootPath: '/admin',
+            rootPath: "/admin",
             branding: {
-              companyName: 'Admin | KANMU',
+              companyName: "Admin | KANMU",
               logo: false,
-              softwareBrothers: false,
-            },
-          },
-          auth: {
-            authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
-            cookieName: 'test',
-            cookiePassword: 'testPass',
-          },
+              softwareBrothers: false
+            }
+          }
+          // auth: {
+          //   authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
+          //   cookieName: 'test',
+          //   cookiePassword: 'testPass',
+          // },
         };
-      },
-    }),
+      }
+    })
   ],
   controllers: [AppController],
   providers: [AppService],
-  exports: [JwtModule],
+  exports: [JwtModule]
 
 })
 export class AppModule {
