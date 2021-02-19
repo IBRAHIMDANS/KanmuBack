@@ -1,4 +1,3 @@
-import AdminBro from "admin-bro";
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -14,14 +13,9 @@ import { AuthModule } from "../auth";
 import { UsersModule } from "../users/users.module";
 import { StructureModule } from "../structure/structure.module";
 import { JotformModule } from "../jotform/jotform.module";
-import { Database, Resource } from "admin-bro-typeorm";
-import { validate } from "class-validator";
-import { AdminModule } from "@admin-bro/nestjs";
-import AdminUser from "../../entities/AdminUser.entity";
-import { AdminModuleOptions } from "@admin-bro/nestjs/types/interfaces/admin-module-options.interface";
 
-AdminBro.registerAdapter({ Database, Resource });
-Resource.validate = validate;
+import { DefaultAdminModule } from "nestjs-admin";
+
 
 @Module({
   imports: [
@@ -34,9 +28,11 @@ Resource.validate = validate;
     // }),
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => {
+
         const db = config.get("database");
         db.entities = [
-          User, Structure, AdminUser
+          User, Structure, "node_modules/nestjs-admin/**/*.entity.js"
+          // AdminUserEntity
         ];
         return db;
       }, inject: [ConfigService]
@@ -65,32 +61,33 @@ Resource.validate = validate;
         inject: [ConfigService]
       }), global: true
     },
-    AdminModule.createAdminAsync({
-      imports: [
-        TypeOrmModule.forFeature([AdminUser])
-      ],
-      inject: [
-        ConfigService
-      ],
-      useFactory(args: any): Promise<AdminModuleOptions> | AdminModuleOptions {
-        return {
-          adminBroOptions: {
-            resources: [AdminUser],
-            rootPath: "/admin",
-            branding: {
-              companyName: "Admin | KANMU",
-              logo: false,
-              softwareBrothers: false
-            }
-          }
-          // auth: {
-          //   authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
-          //   cookieName: 'test',
-          //   cookiePassword: 'testPass',
-          // },
-        };
-      }
-    })
+    // AdminModule.createAdminAsync({
+    //   imports: [
+    //     TypeOrmModule.forFeature([AdminUser])
+    //   ],
+    //   inject: [
+    //     ConfigService
+    //   ],
+    //   useFactory(args: any): Promise<AdminModuleOptions> | AdminModuleOptions {
+    //     return {
+    //       adminBroOptions: {
+    //         resources: [AdminUser],
+    //         rootPath: "/admin",
+    //         branding: {
+    //           companyName: "Admin | KANMU",
+    //           logo: false,
+    //           softwareBrothers: false
+    //         }
+    //       }
+    //       // auth: {
+    //       //   authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
+    //       //   cookieName: 'test',
+    //       //   cookiePassword: 'testPass',
+    //       // },
+    //     };
+    //   }
+    // })
+    DefaultAdminModule
   ],
   controllers: [AppController],
   providers: [AppService],

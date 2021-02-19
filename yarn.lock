@@ -1725,11 +1725,6 @@
   resolved "https://registry.yarnpkg.com/@nestjs/mapped-types/-/mapped-types-0.1.1.tgz#2fa9ff0f1ddbe66d5d1c80ae59df21c0ed0d1361"
   integrity sha512-FROYmmZ2F+tLJP/aHasPMX40iUHQPtEAzOAcfAp21baebN5iLUrdyTuphoXjIqubfPFSwtnAGpVm9kLJjQ//ig==
 
-"@nestjs/passport@^6.1.0":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-6.2.0.tgz#de5bf9b20912d26e15a99c7478b2760e7c3ebc79"
-  integrity sha512-Wy8FeSCNxbfTKRe/mJk0w5hSLsqoNMehg6DUQOoDug+6Uaq+QLEy6wvGPUJbVqGKpJwFHGgUoWp2ag05zh4zpA==
-
 "@nestjs/passport@^7.1.0":
   version "7.1.5"
   resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-7.1.5.tgz#b32fc0492008d73ebae4327fbc0012a738a83664"
@@ -3928,7 +3923,7 @@ commander@^2.20.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-commander@^3.0.1, commander@^3.0.2:
+commander@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
   integrity sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==
@@ -3937,6 +3932,11 @@ commander@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-5.1.0.tgz#46abbd1652f8e059bddaef99bbdcb2ad9cf179ae"
   integrity sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==
+
+commander@^6.0.0:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
+  integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
 
 commondir@^1.0.1:
   version "1.0.1"
@@ -7968,15 +7968,15 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-nestjs-admin@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/nestjs-admin/-/nestjs-admin-0.4.0.tgz#8755f6529e57b595d08682ffe2022f9133ec7240"
-  integrity sha512-K8Qt2hOHkWUFpkYZNLvnzIUoYoYSOHzLJf9Y+4R9/D2+Q66lv7sVr4+uVM7Y+D/IRqEhAZWxynY6rq1X3i5TxQ==
+nestjs-admin@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/nestjs-admin/-/nestjs-admin-0.4.1.tgz#c193c5feb559a687889ffb86a5ffe91f13a605ed"
+  integrity sha512-kkpP4xB48B8LHvJy05ChuC0sPNBts7YMnrcJhQAhLvpivZ3n6oj7j3aImeno7tuibMjPjxkUSIAy5HRKuTL0Bw==
   dependencies:
-    "@nestjs/passport" "^6.1.0"
+    "@nestjs/passport" "^7.1.0"
     bcryptjs "^2.4.3"
     bootstrap "^4.3.1"
-    commander "^3.0.1"
+    commander "^6.0.0"
     connect-flash "^0.1.1"
     express-session "^1.16.2"
     inquirer "^7.0.0"
