@@ -2,15 +2,15 @@ import {
   HttpException,
   HttpModuleOptions,
   HttpService,
-  Injectable,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Structure, User } from '../../entities';
-import { catchError, map } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { UsersService } from '../users/users.service';
-import { UserRoleEnum } from '../../enum/UserRoleEnum';
+  Injectable
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Structure, User } from "../../entities";
+import { catchError, map } from "rxjs/operators";
+import { throwError } from "rxjs";
+import { UsersService } from "../users/users.service";
+import { UserRoleEnum } from "../../enum/UserRoleEnum";
 
 @Injectable()
 export class JotformService {
@@ -45,7 +45,6 @@ export class JotformService {
   }
 
   async createStrucutreByJotform(body) {
-    console.log(body, '<=== ===== ====== ====== ===== ===== body');
     // {
     //   slug: 'submit/203404289844358/',
     //     q6_nomAssociation: 'KANMU',

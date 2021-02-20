@@ -44,7 +44,6 @@ export class UsersService {
   }
 
   async createByFront(payload) {
-    console.log(payload, " <=== payload");
     const {
       email,
       lastName,
@@ -87,11 +86,10 @@ export class UsersService {
     });
     try {
       return await this.save(user, password).then((user) => {
-        console.log(user, "<====== ");
         return {
           status: true
         };
-      }).catch(error => console.log(error));
+      }).catch(error => console.error(error));
     } catch (error) {
       throw new ConflictException(error);
     }
@@ -106,7 +104,6 @@ export class UsersService {
     const password = passwordGenerator();
     user.password = password;
     if(structurePayload) {
-      console.log(structurePayload);
       await this.structureService.create(structurePayload).then((structure) => {
         user.structure = structure;
       });
@@ -170,11 +167,10 @@ export class UsersService {
             .returning(["firstName", "lastName", "email"])
             .execute()
             .then(result => {
-              console.log("result ==>", result);
               return result.raw[0];
             })
             .catch(err => {
-              console.log(err);
+              console.error(err);
             });
           // .where("id = :id", { id: 1 })
         });

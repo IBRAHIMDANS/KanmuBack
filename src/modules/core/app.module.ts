@@ -9,7 +9,6 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { HealthModule } from "../health/health.module";
 import { auth, database, mail } from "../../config";
-import { Structure, User } from "../../entities";
 import { AuthModule } from "../auth";
 import { UsersModule } from "../users/users.module";
 import { StructureModule } from "../structure/structure.module";
@@ -17,7 +16,6 @@ import { JotformModule } from "../jotform/jotform.module";
 import { Database, Resource } from "admin-bro-typeorm";
 import { validate } from "class-validator";
 import { AdminModule } from "@admin-bro/nestjs";
-import AdminUser from "../../entities/AdminUser.entity";
 // import { AdminModuleOptions } from "@admin-bro/nestjs/types/interfaces/admin-module-options.interface";
 
 AdminBro.registerAdapter({ Database, Resource });
@@ -36,7 +34,8 @@ Resource.validate = validate;
       useFactory: (config: ConfigService) => {
         const db = config.get("database");
         db.entities = [
-          User, Structure, AdminUser
+          // User, Structure, AdminUser, Game
+          "dist/**/*.entity.js"
         ];
         return db;
       }, inject: [ConfigService]

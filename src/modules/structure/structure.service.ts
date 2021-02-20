@@ -38,7 +38,7 @@ export class StructureService {
   }
 
   async findAll(query?: any) {
-    const { page = 1, limit = 10 } = query;
+    const { page = 0, limit = 10 } = query;
     try {
       return await this.structureRepository.findAndCount({
         skip: page,

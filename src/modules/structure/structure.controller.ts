@@ -53,7 +53,6 @@ export class StructureController {
   @ApiResponse({ status: 400, description: "Bad Request" })
   @ApiResponse({ status: 401, description: "Unauthorized" })
   async getByID(@Param("id", ParseIntPipe) id: number) {
-    console.log(id, "   <==== id ");
     return this.structureService.find(id);
   }
 }

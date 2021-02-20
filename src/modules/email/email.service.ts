@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { User } from '../../entities';
-import * as mailjet from 'node-mailjet';
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { User } from "../../entities";
+import * as mailjet from "node-mailjet";
 
 @Injectable()
 export class EmailService {
   private transporter;
 
   constructor(private readonly config: ConfigService) {
-    this.transporter = mailjet.connect(this.config.get('mail.username'), this.config.get('mail.password'));
+    this.transporter = mailjet.connect(this.config.get("mail.username"), this.config.get("mail.password"));
   }
 
   async sendMailRegister(user: User, password?: string) {
@@ -34,11 +34,11 @@ export class EmailService {
           },
         ],
       }).then((result) => {
-      console.log('Message sent');
-      console.log(result.body);
+      console.info("Message sent");
+      console.info(result.body);
     })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
 
 
@@ -84,11 +84,11 @@ export class EmailService {
           },
         ],
       }).then((result) => {
-      console.log('Message sent');
-      console.log(result.body);
+      console.info("Message sent");
+      console.info(result.body);
     })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
 
 
