@@ -18,7 +18,7 @@ import { Database, Resource } from "admin-bro-typeorm";
 import { validate } from "class-validator";
 import { AdminModule } from "@admin-bro/nestjs";
 import AdminUser from "../../entities/AdminUser.entity";
-import { AdminModuleOptions } from "@admin-bro/nestjs/types/interfaces/admin-module-options.interface";
+// import { AdminModuleOptions } from "@admin-bro/nestjs/types/interfaces/admin-module-options.interface";
 
 AdminBro.registerAdapter({ Database, Resource });
 Resource.validate = validate;
@@ -65,31 +65,35 @@ Resource.validate = validate;
         inject: [ConfigService]
       }), global: true
     },
-    AdminModule.createAdminAsync({
-      imports: [
-        TypeOrmModule.forFeature([AdminUser])
-      ],
-      inject: [
-        ConfigService
-      ],
-      useFactory(args: any): Promise<AdminModuleOptions> | AdminModuleOptions {
-        return {
-          adminBroOptions: {
-            resources: [AdminUser],
-            rootPath: "/admin",
-            branding: {
-              companyName: "Admin | KANMU",
-              logo: false,
-              softwareBrothers: false
-            }
-          }
-          // auth: {
-          //   authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
-          //   cookieName: 'test',
-          //   cookiePassword: 'testPass',
-          // },
-        };
+    AdminModule.createAdmin({
+      // imports: [
+      //   TypeOrmModule.forFeature([AdminUser])
+      // ],
+      // inject: [
+      //   ConfigService,
+      // ],
+      // useFactory(args: any): Promise<AdminModuleOptions> | AdminModuleOptions {
+      //   console.log(`%c ${args}`, "font-size:18px;color:blue");
+      //   return
+      //   {
+      adminBroOptions: {
+        resources: [
+          // AdminUser
+        ],
+        rootPath: "/admin",
+        branding: {
+          companyName: "Admin | KANMU",
+          logo: false,
+          softwareBrothers: false
+        }
       }
+      // , auth: {
+      //   authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
+      //   cookieName: 'test',
+      //   cookiePassword: 'testPass',
+      // },
+      //   };
+      // }
     })
   ],
   controllers: [AppController],

@@ -2,19 +2,20 @@ import {
   ConflictException,
   Injectable,
   NotAcceptableException,
-  NotFoundException,
-} from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../entities';
-import { EmailPayload, RegisterPayload } from '../auth/payloads';
-import crypto from 'crypto';
-import { EmailService } from '../email/email.service';
-import { JwtService } from '@nestjs/jwt';
-import { passwordGenerator } from '../../lib/passwordGen';
-import { StructureService } from '../structure/structure.service';
-import { StructurePayload } from '../structure/payload/structure.payload';
-import { RegisterPasswordPayload } from '../auth/payloads/registerPassword.payload';
+  NotFoundException
+} from "@nestjs/common";
+import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "../../entities";
+import { EmailPayload, RegisterPayload } from "../auth/payloads";
+import crypto from "crypto";
+import { EmailService } from "../email/email.service";
+import { JwtService } from "@nestjs/jwt";
+import { passwordGenerator } from "../../lib/passwordGen";
+import { StructureService } from "../structure/structure.service";
+import { StructurePayload } from "../structure/payload/structure.payload";
+import { RegisterPasswordPayload } from "../auth/payloads/registerPassword.payload";
+import { UserRoleEnum } from "../../enum/UserRoleEnum";
 
 @Injectable()
 export class UsersService {
@@ -23,7 +24,7 @@ export class UsersService {
               private readonly userRepository: Repository<User>,
               private readonly structureService: StructureService,
               private readonly emailService: EmailService,
-              private readonly jwtService: JwtService,
+              private readonly jwtService: JwtService
   ) {
   }
 
@@ -36,16 +37,70 @@ export class UsersService {
   }
 
   async getByEmail(email: string): Promise<User> {
-    return await this.userRepository.createQueryBuilder('users')
-      .where('users.email = :email')
-      .setParameter('email', email)
+    return await this.userRepository.createQueryBuilder("users")
+      .where("users.email = :email")
+      .setParameter("email", email)
       .getOne();
+  }
+
+  async createByFront(payload) {
+    console.log(payload, " <=== payload");
+    const {
+      email,
+      lastName,
+      firstName,
+      nameAssociation,
+      createdAtStructure,
+      address,
+      bannerUrl,
+      description,
+      logoUrl,
+      numberMember,
+      socialNetworks,
+      gameList
+
+    } = payload;
+    const existedUser = await this.getByEmail(email);
+    if(existedUser) {
+      throw new NotAcceptableException("User with provided email already created.");
+    }
+    const user = await this.userRepository.create({
+      firstName,
+      lastName,
+      email,
+      role: UserRoleEnum.USER
+    });
+    const password = passwordGenerator();
+    user.password = password;
+    await this.structureService.create({
+      bannerUrl,
+      name: nameAssociation,
+      address,
+      socialNetworks,
+      gameList,
+      logoUrl,
+      createdAtStructure: new Date(),
+      numberMember,
+      description
+    }).then((structure) => {
+      user.structure = structure;
+    });
+    try {
+      return await this.save(user, password).then((user) => {
+        console.log(user, "<====== ");
+        return {
+          status: true
+        };
+      }).catch(error => console.log(error));
+    } catch (error) {
+      throw new ConflictException(error);
+    }
   }
 
   async create(userPayload: RegisterPayload, structurePayload?: StructurePayload): Promise<Partial<User>> {
     const existedUser = await this.getByEmail(userPayload.email);
     if(existedUser) {
-      throw new NotAcceptableException('User with provided email already created.');
+      throw new NotAcceptableException("User with provided email already created.");
     }
     const user = await this.userRepository.create(userPayload);
     const password = passwordGenerator();
@@ -96,26 +151,26 @@ export class UsersService {
 
   async resetPasswordRegister(payload: RegisterPasswordPayload) {
     if(payload.newPassword === payload.confirmNewPassword) {
-      const passHash = crypto.createHmac('sha256', payload.password)
-        .digest('hex');
-      const newPassHash = crypto.createHmac('sha256', payload.newPassword)
-        .digest('hex');
-      return await this.userRepository.createQueryBuilder('users')
-        .where('users.email = :email and users.password = :password')
-        .setParameter('email', payload.email)
-        .setParameter('password', newPassHash)
+      const passHash = crypto.createHmac("sha256", payload.password)
+        .digest("hex");
+      const newPassHash = crypto.createHmac("sha256", payload.newPassword)
+        .digest("hex");
+      return await this.userRepository.createQueryBuilder("users")
+        .where("users.email = :email and users.password = :password")
+        .setParameter("email", payload.email)
+        .setParameter("password", newPassHash)
         .getOne().then(async res => {
           if(res === undefined) {
             throw new NotFoundException(res);
           }
-          return await this.userRepository.createQueryBuilder('users')
+          return await this.userRepository.createQueryBuilder("users")
             .update()
             .set({ password: newPassHash })
             .set({ isActive: true })
-            .returning(['firstName', 'lastName', 'email'])
+            .returning(["firstName", "lastName", "email"])
             .execute()
             .then(result => {
-              console.log('result ==>', result);
+              console.log("result ==>", result);
               return result.raw[0];
             })
             .catch(err => {
@@ -135,12 +190,12 @@ export class UsersService {
   }
 
   async getByEmailAndPass(email: string, password: string): Promise<User> {
-    const passHash = crypto.createHmac('sha256', password).digest('hex');
-    return await this.userRepository.createQueryBuilder('users')
-      .where('users.email = :email and users.password = :password and users.isActive= :isActive')
-      .setParameter('email', email)
-      .setParameter('password', passHash)
-      .setParameter('isActive', true)
+    const passHash = crypto.createHmac("sha256", password).digest("hex");
+    return await this.userRepository.createQueryBuilder("users")
+      .where("users.email = :email and users.password = :password and users.isActive= :isActive")
+      .setParameter("email", email)
+      .setParameter("password", passHash)
+      .setParameter("isActive", true)
       .getOne();
   }
 }

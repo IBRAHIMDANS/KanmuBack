@@ -1,9 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import Structure from '../../entities/Structure.entity';
-import { Repository } from 'typeorm';
-import { StructurePayload } from './payload/structure.payload';
-import { User } from '../../entities';
+import { ConflictException, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import Structure from "../../entities/Structure.entity";
+import { Repository } from "typeorm";
+import { StructurePayload } from "./payload/structure.payload";
+import { User } from "../../entities";
 
 @Injectable()
 export class StructureService {
@@ -13,7 +13,6 @@ export class StructureService {
   }
 
   async create(structurePayload: StructurePayload) {
-    console.log(structurePayload);
     const structure = await this.structureRepository.create(structurePayload);
     try {
       return await this.save(structure).then(res => res);
@@ -39,9 +38,12 @@ export class StructureService {
   }
 
   async findAll(query?: any) {
-    const { page, limit = 10 } = query;
+    const { page = 1, limit = 10 } = query;
     try {
-      return await this.structureRepository.findAndCount({ skip: 1 });
+      return await this.structureRepository.findAndCount({
+        skip: page,
+        take: limit
+      });
     } catch (error) {
       throw new ConflictException(error);
     }
