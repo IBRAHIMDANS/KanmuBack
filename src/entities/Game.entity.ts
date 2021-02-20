@@ -12,7 +12,7 @@ import Structure from "./Structure.entity";
   name: "games"
 })
 
-export default class GamesEntity extends TimestampEntities {
+export default class Game extends TimestampEntities {
 
   @Column({ unique: true })
   @PrimaryGeneratedColumn()

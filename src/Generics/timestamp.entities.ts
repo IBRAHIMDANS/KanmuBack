@@ -1,25 +1,26 @@
-import { Exclude } from 'class-transformer';
+import { Exclude } from "class-transformer";
 import {
+  BaseEntity,
   BeforeInsert,
   BeforeRemove,
   BeforeUpdate,
   CreateDateColumn,
   DeleteDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+  UpdateDateColumn
+} from "typeorm";
 
 
-export class TimestampEntities {
+export class TimestampEntities extends BaseEntity {
 
   @Exclude()
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp', update: false })
+  @CreateDateColumn({ name: "created_at", type: "timestamp", update: false })
   createdAt?: Date;
 
   @Exclude()
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  @UpdateDateColumn({ name: "updated_at", type: "timestamp" })
   updatedAt?: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp' })
+  @DeleteDateColumn({ name: "deleted_at", type: "timestamp" })
   deletedAt?: Date;
 
   @BeforeInsert()

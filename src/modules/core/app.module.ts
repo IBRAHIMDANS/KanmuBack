@@ -16,6 +16,7 @@ import { JotformModule } from "../jotform/jotform.module";
 import { Database, Resource } from "admin-bro-typeorm";
 import { validate } from "class-validator";
 import { AdminModule } from "@admin-bro/nestjs";
+import { GameModule } from "../game/game.module";
 // import { AdminModuleOptions } from "@admin-bro/nestjs/types/interfaces/admin-module-options.interface";
 
 AdminBro.registerAdapter({ Database, Resource });
@@ -45,6 +46,7 @@ Resource.validate = validate;
     StructureModule,
     HealthModule,
     JotformModule,
+    GameModule,
     {
       ...JwtModule.registerAsync({
         useFactory: async (configService: ConfigService) => {

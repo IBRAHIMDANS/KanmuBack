@@ -64,7 +64,7 @@ export default class Structure extends TimestampEntities {
 //   )
 //   @JoinColumn()
 //   user: User;
-  // TODO in futur save game on collection games
+  // TODO in futur save game on collection game
   @ManyToMany(type => GamesEntity, {
     cascade: true
   })
