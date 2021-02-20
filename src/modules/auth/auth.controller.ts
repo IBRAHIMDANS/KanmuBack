@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Request, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Post,
+  Request,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors
+} from "@nestjs/common";
 import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 
@@ -8,6 +16,7 @@ import { TokenModel } from "./dto/token.model";
 import { EmailPayload, LoginPayload } from "./payloads";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { RegisterPasswordPayload } from "./payloads/registerPassword.payload";
+import { FilesInterceptor } from "@nestjs/platform-express";
 
 @Controller("auth")
 @ApiTags("authentication")
@@ -33,8 +42,9 @@ export class AuthController {
   @ApiResponse({ status: 201, description: "Successful Registration" })
   @ApiResponse({ status: 400, description: "Bad Request" })
   @ApiResponse({ status: 401, description: "Unauthorized" })
-  async register(@Body() payload) {
-    return await this.userService.create(payload);
+  @UseInterceptors(FilesInterceptor("files"))
+  async register(@Body() payload, @UploadedFiles() files) {
+    return await this.userService.createByFront(payload);
   }
 
   @Post("send-mail-forget")

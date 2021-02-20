@@ -2,12 +2,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { TimestampEntities } from '../Generics/timestamp.entities';
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn
+} from "typeorm";
+import { TimestampEntities } from "../Generics/timestamp.entities";
+import GamesEntity from "./Game.entity";
 
 @Entity({
-  name: 'structures',
+  name: "structures"
 })
 
 export default class Structure extends TimestampEntities {
@@ -16,39 +19,39 @@ export default class Structure extends TimestampEntities {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({ length: 255, name: 'name' })
+  @Column({ length: 255, name: "name" })
   name?: string;
 
 
   @CreateDateColumn({
-    name: 'created_at_structure',
-    type: 'timestamp',
-    update: false,
+    name: "created_at_structure",
+    type: "timestamp",
+    update: false
   })
   createdAtStructure?: Date;
 
-  @Column({ length: 255, name: 'number_member' })
+  @Column({ length: 255, name: "number_member" })
   numberMember?: string;
 
 
   @Column({ length: 255 })
   description: string;
 
-  @Column({ type: 'simple-array', name: 'game_list', nullable: true })
+  @Column({ type: "simple-array", name: "game_list", nullable: true })
   gameList?: string[];
 
 
-  @Column({ length: 255, name: 'logo_url' })
+  @Column({ length: 255, name: "logo_url" })
   logoUrl?: string;
 
-  @Column({ length: 255, name: 'banner_url' })
+  @Column({ length: 255, name: "banner_url" })
   bannerUrl?: string;
 
 
-  @Column({ length: 255, name: 'address' })
+  @Column({ length: 255, name: "address" })
   address?: string;
 
-  @Column({ type: 'simple-array', name: 'social_networks', nullable: true })
+  @Column({ type: "simple-array", name: "social_networks", nullable: true })
   socialNetworks?: string[];
 
 //   @OneToOne(() => User,
@@ -61,4 +64,10 @@ export default class Structure extends TimestampEntities {
 //   )
 //   @JoinColumn()
 //   user: User;
+  // TODO in futur save game on collection games
+  @ManyToMany(type => GamesEntity, {
+    cascade: true
+  })
+  @JoinTable()
+  games: GamesEntity[];
 }
