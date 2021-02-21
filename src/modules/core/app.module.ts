@@ -1,4 +1,4 @@
-import AdminBro from "admin-bro";
+// import AdminBro from "admin-bro";
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -13,14 +13,15 @@ import { AuthModule } from "../auth";
 import { UsersModule } from "../users/users.module";
 import { StructureModule } from "../structure/structure.module";
 import { JotformModule } from "../jotform/jotform.module";
-import { Database, Resource } from "admin-bro-typeorm";
-import { validate } from "class-validator";
-import { AdminModule } from "@admin-bro/nestjs";
 import { GameModule } from "../game/game.module";
+
+// import { Database, Resource } from "admin-bro-typeorm";
+// import { AdminModule } from "@admin-bro/nestjs";
+// import { validate } from "class-validator";
 // import { AdminModuleOptions } from "@admin-bro/nestjs/types/interfaces/admin-module-options.interface";
 
-AdminBro.registerAdapter({ Database, Resource });
-Resource.validate = validate;
+// AdminBro.registerAdapter({ Database, Resource });
+// Resource.validate = validate;
 
 @Module({
   imports: [
@@ -65,37 +66,37 @@ Resource.validate = validate;
         },
         inject: [ConfigService]
       }), global: true
-    },
-    AdminModule.createAdmin({
-      // imports: [
-      //   TypeOrmModule.forFeature([AdminUser])
-      // ],
-      // inject: [
-      //   ConfigService,
-      // ],
-      // useFactory(args: any): Promise<AdminModuleOptions> | AdminModuleOptions {
-      //   console.log(`%c ${args}`, "font-size:18px;color:blue");
-      //   return
-      //   {
-      adminBroOptions: {
-        resources: [
-          // AdminUser
-        ],
-        rootPath: "/admin",
-        branding: {
-          companyName: "Admin | KANMU",
-          logo: false,
-          softwareBrothers: false
-        }
-      }
-      // , auth: {
-      //   authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
-      //   cookieName: 'test',
-      //   cookiePassword: 'testPass',
-      // },
-      //   };
-      // }
-    })
+    }
+    // AdminModule.createAdmin({
+    // imports: [
+    //   TypeOrmModule.forFeature([AdminUser])
+    // ],
+    // inject: [
+    //   ConfigService,
+    // ],
+    // useFactory(args: any): Promise<AdminModuleOptions> | AdminModuleOptions {
+    //   console.log(`%c ${args}`, "font-size:18px;color:blue");
+    //   return
+    //   {
+    // adminBroOptions: {
+    //   resources: [
+    //     // AdminUser
+    //   ],
+    //   rootPath: "/admin",
+    //   branding: {
+    //     companyName: "Admin | KANMU",
+    //     logo: false,
+    //     softwareBrothers: false
+    //   }
+    // }
+    // , auth: {
+    //   authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
+    //   cookieName: 'test',
+    //   cookiePassword: 'testPass',
+    // },
+    //   };
+    // }
+    // })
   ],
   controllers: [AppController],
   providers: [AppService],

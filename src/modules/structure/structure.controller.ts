@@ -22,18 +22,28 @@ export class StructureController {
 
   @Post()
   @ApiBearerAuth("")
-  @ApiResponse({ status: 201, description: 'Successful Registration' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 201, description: "Successful Registration" })
+  @ApiResponse({ status: 400, description: "Bad Request" })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
   async updateStructure(@UserDecorator() user: Partial<User>, @Body() payload: Partial<StructurePayload>) {
     return this.structureService.update(payload, user);
   }
 
+  @Post("test")
+  @ApiBearerAuth("")
+  @ApiResponse({ status: 201, description: "Successful Registration" })
+  @ApiResponse({ status: 400, description: "Bad Request" })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
+  async test(@Body() payload) {
+    console.log(payload);
+    return payload;
+  }
+
   @Get()
-  @ApiBearerAuth('')
-  @ApiResponse({ status: 201, description: 'Successful Registration' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiBearerAuth("")
+  @ApiResponse({ status: 201, description: "Successful Registration" })
+  @ApiResponse({ status: 400, description: "Bad Request" })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
   async get(@UserDecorator() user: Partial<User>) {
     return this.structureService.find(+user.structure.id);
   }

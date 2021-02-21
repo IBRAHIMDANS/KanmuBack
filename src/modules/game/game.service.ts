@@ -21,12 +21,10 @@ export class GameService {
   }
 
   async create(payload: GamePayload) {
-    console.log("payload ===>  ", payload);
     const existedUser = await this.getByName(payload.name);
     if(existedUser) {
       throw new NotAcceptableException("Game already exist.");
     }
-    // this.gameRepository.create(payload);
     return await this.gameRepository.save(payload).then(() => ({
       status: 200,
       message: "created"
@@ -35,5 +33,21 @@ export class GameService {
 
   async find() {
     return await this.gameRepository.find();
+  }
+
+  async findOne(id: number) {
+    return await this.gameRepository.findOneOrFail(id);
+  }
+
+  async update(id: number, payload: GamePayload) {
+    return await this.gameRepository.findOneOrFail(id).then(async (game) => {
+      return await this.gameRepository.update(id, payload);
+    });
+  }
+
+  async delete(id: number) {
+    return await this.gameRepository.findOneOrFail(id).then(async (game) => {
+      return await this.gameRepository.softDelete(id);
+    });
   }
 }

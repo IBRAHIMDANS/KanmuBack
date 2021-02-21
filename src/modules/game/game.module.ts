@@ -2,17 +2,15 @@ import { Module } from "@nestjs/common";
 import { GameService } from "./game.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Game } from "../../entities";
-import { ConfigModule } from "@nestjs/config";
 import { GameController } from "./game.controller";
 
 @Module({
-  providers: [GameService],
+  controllers: [GameController],
   imports: [
-    TypeOrmModule.forFeature([Game]),
-    ConfigModule
+    TypeOrmModule.forFeature([Game])
   ],
-  exports: [GameModule],
-  controllers: [GameController]
+  providers: [GameService],
+  exports: [GameModule, GameService]
 })
 export class GameModule {
 
