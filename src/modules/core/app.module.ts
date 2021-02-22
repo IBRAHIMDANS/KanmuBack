@@ -17,14 +17,6 @@ import { GameModule } from "../game/game.module";
 
 import { DefaultAdminModule } from "nestjs-admin";
 
-// import { Database, Resource } from "admin-bro-typeorm";
-// import { AdminModule } from "@admin-bro/nestjs";
-// import { validate } from "class-validator";
-// import { AdminModuleOptions } from "@admin-bro/nestjs/types/interfaces/admin-module-options.interface";
-
-// AdminBro.registerAdapter({ Database, Resource });
-// Resource.validate = validate;
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -38,9 +30,7 @@ import { DefaultAdminModule } from "nestjs-admin";
       useFactory: (config: ConfigService) => {
         const db = config.get("database");
         db.entities = [
-     //     User, Structure, "node_modules/nestjs-admin/**/*.entity.js"
-          // AdminUserEntity
-          // User, Structure, AdminUser, Game
+          "node_modules/nestjs-admin/**/*.entity.js",
           "dist/**/*.entity.js"
         ];
         return db;
@@ -70,7 +60,8 @@ import { DefaultAdminModule } from "nestjs-admin";
         },
         inject: [ConfigService]
       }), global: true
-    }
+    },
+    DefaultAdminModule
     // AdminModule.createAdmin({
     // imports: [
     //   TypeOrmModule.forFeature([AdminUser])
