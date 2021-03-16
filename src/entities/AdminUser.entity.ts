@@ -1,8 +1,9 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
   name: 'admin',
 })
+
 
 export default class AdminUser extends BaseEntity {
 
