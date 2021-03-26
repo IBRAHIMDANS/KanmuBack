@@ -30,8 +30,8 @@ import { DefaultAdminModule } from "nestjs-admin";
       useFactory: (config: ConfigService) => {
         const db = config.get("database");
         db.entities = [
-          "node_modules/nestjs-admin/**/*.entity.js",
-          "dist/**/*.entity.js"
+          "dist/**/*.entity.js",
+          "node_modules/nestjs-admin/**/*.entity.js"
         ];
         return db;
       }, inject: [ConfigService]
