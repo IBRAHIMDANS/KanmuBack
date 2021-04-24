@@ -37,7 +37,7 @@
   "dependencies": {
     "@admin-bro/nestjs": "^1.0.0",
     "@admin-bro/typeorm": "^1.4.0",
-    "@godaddy/terminus": "^4.4.1",
+    "@godaddy/terminus": "4.7.1",
     "@golevelup/nestjs-webhooks": "^0.2.6",
     "@nest-middlewares/helmet": "^6.0.0",
     "@nestjs/common": "^7.0.0",
