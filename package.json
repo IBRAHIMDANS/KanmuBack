@@ -35,7 +35,7 @@
     "cache:clear": "ts-node ./node_modules/.bin/typeorm cache:clear"
   },
   "dependencies": {
-    "@admin-bro/nestjs": "^1.0.0",
+    "@admin-bro/nestjs": "1.1.0",
     "@admin-bro/typeorm": "^1.4.0",
     "@godaddy/terminus": "^4.4.1",
     "@golevelup/nestjs-webhooks": "^0.2.6",
